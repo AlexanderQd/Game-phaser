@@ -2,23 +2,31 @@
 
 Game.Level1 = function(game){};
 
-
+//map
 let map;
 let layer;
+//player
 let player;
 let controls = {};
 const playerSpeed = 250;
-let button;
-let demon;
-const demonSpeed = 100;
 
+
+//enemie
+let demons = [];
+const demonSpeed = 100;
+let count;
+//shoot
+let bullets;
+let fireRate = 500;
+let nextFire = 0;
+//game interface
+let points = 0;
+let scoreString = '';
+let scoreText;
 Game.Level1.prototype = {
     create:function()
     {
-        /*
-            add gravity
-        */
-        this.physics.arcade.gravity.y = 1400;
+        count = 0;
         /*
             background
         */
@@ -40,11 +48,32 @@ Game.Level1.prototype = {
         /*
             add player in position x y 
         */       
-        player = new Player(100,450,this.game);        
+        player = new Player(100,450,this.game);
+        this.camera.follow(player.player);
+        player.player.body.collideWorldBounds = true;
+        player.player.body.gravity.y = 1400;    
+        //add bullets
+        bullets = this.add.group();
+        bullets.enableBody = true;
+        bullets.enableBodyType = Phaser.Physics.ARCADE;        
+
+        bullets.createMultiple(100, 'bullet');
+        bullets.setAll('checkWorldBounds', true);
+        bullets.setAll('outOfBoundsKill', true);
+
+        
+        
         /*
-            add demon in position x y
+            add demons in position x y
         */
-        demon = new Demon(600,100,this.game); 
+        for(let i = 0; i < 4; i++)
+        {
+           /* demons[i] = new Demon(600,100,this.game);
+            demons[1] = new Demon(1200,100,this.game);
+            demons[2]*/
+        }
+        
+       
         /*
             add the controls
         */
@@ -52,14 +81,11 @@ Game.Level1.prototype = {
            right: this.input.keyboard.addKey(Phaser.Keyboard.A),
            left: this.input.keyboard.addKey(Phaser.Keyboard.D),
            up: this.input.keyboard.addKey(Phaser.Keyboard.W)
-       };
-        button = this.add.button(0,0, 'buttons', function(){
-            console.log("pulsado");
-       });
-        button.fixedToCamera = true;
-      
-       
-        
+       };      
+        //score
+        scoreString = 'Score: ';
+        scoreText = this.add.text(10,50, scoreString + points, { font: '34px Arial', fill: '#fff'});
+        scoreText.fixedToCamera = true;        
     },
     update:function(){
         
@@ -67,7 +93,9 @@ Game.Level1.prototype = {
             colitions between the player and the world
         */
         this.physics.arcade.collide(player.player,layer);        
-        this.physics.arcade.collide(demon.demon,layer);       
+        this.physics.arcade.collide(demons[0].demon,layer);
+        this.physics.arcade.collide(demons[1].demon,layer);
+           
         /*
             animation of the player
         */
@@ -89,16 +117,65 @@ Game.Level1.prototype = {
         }
         
         /*
-            animations of the demon
+            animations of the demons
         */
-        if(demon.demon.position.x >= 600)
+        
+        if(demons[count].demon.position.x >= demons[count].demon.positionleft)
         {
-           demon.right();
+           demons[count].right();
         }
-        if(demon.demon.position.x < 300)
+        if(demons[count].demon.position.x < demons[count].demon.positionleft - 300)
         {
-           demon.left();
+           demons[count].left();
+        }
+        //shooting
+        if(this.input.activePointer.isDown)
+        {   let time = this.time.now;
+            fire(this.game,player.player,bullets);            
+        }
+       
+        this.physics.arcade.overlap(bullets, demons[count].demon, collisionHandler, null, this);        
+        
+        if(count >= demons.length -1)
+        {
+            count = 0;
+        }else{
+            count ++;
         }
         
     },
+    
+}
+function fire(game,player,bullets){   
+    
+    if(game.time.now > nextFire && bullets.countDead() > 0)
+    {
+        
+        nextFire = game.time.now + fireRate;
+        let bullet = bullets.getFirstDead();        
+        
+        bullet.animations.add('left',[0],5,true);
+        bullet.animations.add('right',[1],5,true);
+        if(player.animations.name ==='left')
+        {  
+            bullet.reset(player.x - 75 , player.y - 25);
+            bullet.animations.play('left');
+            bullet.body.velocity.x = - 400;
+            
+        }else{
+            bullet.reset(player.x + 20 , player.y -25);
+            bullet.animations.play('right');
+            bullet.body.velocity.x = 400; 
+        }
+    }
+}
+function collisionHandler(demon, bullet)
+{    
+    bullet.kill();
+    demon.life -= 10;       
+    scoreText.text = scoreString + (points += 10 );
+    if(demon.life <= 0)
+    {
+        demon.kill();
+    }  
 }

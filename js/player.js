@@ -32,6 +32,6 @@ class Player {
     {
         this.player.animations.stop(null,true);
         this.player.body.velocity.x = 0;
-    }   
+    }  
     
 }

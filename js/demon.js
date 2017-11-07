@@ -5,7 +5,8 @@
     add physics and body
     
 */
-
+let life;
+let positionleft;
 class Demon
 {
     constructor(x,y,game)
@@ -17,6 +18,10 @@ class Demon
         this.demon.animations.add('rigth',[12,15],5,true);
         game.physics.arcade.enable(this.demon);
         this.demon.body.collideWorldBounds = true;
+        this.demon.life = 100;
+        this.demon.positionleft = this.demon.position.x;
+        this.demon.body.gravity.y = 1400;
+        
     }
     left()
     {
