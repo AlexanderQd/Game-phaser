@@ -10,6 +10,8 @@ class Player {
         this.player.damage = 10;
         this.player.speed = 250;
         this.player.mana = 100;
+        this.player.shotsound = game.add.audio('playershot');
+        this.player.jumpsound = game.add.audio('playerjump')
     }
     right()
     {
@@ -28,6 +30,7 @@ class Player {
     }
     up()
     {
+        this.player.jumpsound.play();
         this.player.body.velocity.y = -700;
     }
     stop()

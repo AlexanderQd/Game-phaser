@@ -46,6 +46,11 @@ Game.Level1.prototype = {
         */
         map.setCollisionBetween(23,24);
         map.setCollisionBetween(32,34);
+        //audio======================================================
+        let music = this.add.audio('epic');
+        music.play('', 0, 1, true);
+        music.onLoop.add(this.playLevelMusic, music);
+        
         /*
             add player in position x y 
         */  
@@ -140,7 +145,9 @@ Game.Level1.prototype = {
        
         
     },
-    
+    playLevelMusic: function(){
+         this.play('', 0, 1, true);
+    }
 }
 function fire(game,player,bullets){   
     
@@ -152,6 +159,7 @@ function fire(game,player,bullets){
         
         bullet.animations.add('left',[0],5,true);
         bullet.animations.add('right',[1],5,true);
+        player.shotsound.play();
         if(player.animations.name ==='left')
         {  
             bullet.reset(player.x - 75 , player.y - 15);

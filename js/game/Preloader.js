@@ -10,6 +10,8 @@ Game.Preloader.prototype = {
 
         //player
         this.load.spritesheet('player', '../assets/Character/Walk/walk.png',56,57,20);
+        this.load.audio('playershot','../assets/Character/shot/shot.ogg');
+        this.load.audio('playerjump','../assets/Character/shot/jump.ogg');
         //shoot
         this.load.spritesheet('bullet','../assets/Character/shot/shot.png',25,21,20);
         
@@ -19,7 +21,7 @@ Game.Preloader.prototype = {
         //enemie        
         this.load.atlas('demon','../assets/lpc/spritesheet.png', '../assets/lpc/sprites.json');
         this.load.atlas('demonfly','../assets/lpc/fly.png','../assets/lpc/fly.json');
-
+        this.load.audio('epic', '../assets/audio/level1/level1.ogg');
     },
     create:function(){
         let game = this;
