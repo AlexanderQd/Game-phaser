@@ -10,7 +10,7 @@ Game.Boot.prototype = {
         this.stage.disableVisibilityChange = true;
     },
     preload:function(){
-        this.load.image('preloaderBar','assets/load/load.png');
+        
     },
 
     create:function(){

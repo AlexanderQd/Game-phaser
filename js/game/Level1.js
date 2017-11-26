@@ -8,12 +8,11 @@ let layer;
 //player
 let player;
 let controls = {};
-const playerSpeed = 250;
 
 
 //enemie
 let demons = [];
-const demonSpeed = 100;
+let demonsfly = [];
 let count;
 //shoot
 let bullets;
@@ -30,12 +29,13 @@ Game.Level1.prototype = {
         /*
             background
         */
-        this.add.tileSprite(0,0,2560,600,'background');       
+        this.add.tileSprite(0,0,3200,6400,'background');       
         /*
             add the tilemap, with the scale of cubes
         */
-        map = this.add.tilemap('map',64,64);
-        map.addTilesetImage('tileset');
+        map = this.add.tilemap('map',64,64);        
+        map.addTilesetImage('tilemappaterns');
+        
         /*
             created the layer
         */
@@ -44,11 +44,12 @@ Game.Level1.prototype = {
         /*
             collitions with cubes of component the map
         */
-        map.setCollisionBetween(0,19);
+        map.setCollisionBetween(23,24);
+        map.setCollisionBetween(32,34);
         /*
             add player in position x y 
-        */       
-        player = new Player(100,450,this.game);
+        */  
+        player = new Player(0,3000,this.game);
         this.camera.follow(player.player);
         player.player.body.collideWorldBounds = true;
         player.player.body.gravity.y = 1400;    
@@ -66,14 +67,14 @@ Game.Level1.prototype = {
         /*
             add demons in position x y
         */
-        for(let i = 0; i < 4; i++)
+       /* for(let i = 0; i < 2; i++)
         {
-           /* demons[i] = new Demon(600,100,this.game);
-            demons[1] = new Demon(1200,100,this.game);
-            demons[2]*/
-        }
-        
-       
+            demons[i] = new Demon(600,100,this.game,Phaser);
+            demons[i] = new Demon(1200,100,this.game,Phaser);
+            
+        }*/
+        demons[0] = new Demon(600, 100, this.game, Phaser);
+        demonsfly[0]  = new DemonFly(900, 450, this.game, Phaser);      
         /*
             add the controls
         */
@@ -88,20 +89,20 @@ Game.Level1.prototype = {
         scoreText.fixedToCamera = true;        
     },
     update:function(){
-        
+       
         /*
             colitions between the player and the world
         */
         this.physics.arcade.collide(player.player,layer);        
         this.physics.arcade.collide(demons[0].demon,layer);
-        this.physics.arcade.collide(demons[1].demon,layer);
-           
+       // this.physics.arcade.collide(demons[1].demon,layer);
+        demonsfly[0].demonfly.animations.play('fly', 5, true);
         /*
             animation of the player
         */
         if(controls.right.isDown)
         { 
-            player.right();       
+           player.right();       
         }
         if(controls.left.isDown)
         {
@@ -118,30 +119,25 @@ Game.Level1.prototype = {
         
         /*
             animations of the demons
-        */
-        
-        if(demons[count].demon.position.x >= demons[count].demon.positionleft)
-        {
-           demons[count].right();
-        }
-        if(demons[count].demon.position.x < demons[count].demon.positionleft - 300)
-        {
-           demons[count].left();
-        }
+        */       
+        demons[0].patrol();
+        demonsfly[0].fly();
         //shooting
         if(this.input.activePointer.isDown)
         {   let time = this.time.now;
             fire(this.game,player.player,bullets);            
         }
        
-        this.physics.arcade.overlap(bullets, demons[count].demon, collisionHandler, null, this);        
-        
+        this.physics.arcade.overlap(bullets, demons[0].demon, collisionHandler, null, this);        
+        this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this); 
         if(count >= demons.length -1)
         {
             count = 0;
         }else{
             count ++;
         }
+        
+       
         
     },
     
@@ -158,24 +154,24 @@ function fire(game,player,bullets){
         bullet.animations.add('right',[1],5,true);
         if(player.animations.name ==='left')
         {  
-            bullet.reset(player.x - 75 , player.y - 25);
+            bullet.reset(player.x - 75 , player.y - 15);
             bullet.animations.play('left');
             bullet.body.velocity.x = - 400;
             
         }else{
-            bullet.reset(player.x + 20 , player.y -25);
+            bullet.reset(player.x + 20 , player.y -15);
             bullet.animations.play('right');
             bullet.body.velocity.x = 400; 
         }
     }
 }
-function collisionHandler(demon, bullet)
-{    
+function collisionHandler(enemie, bullet)
+{   
     bullet.kill();
-    demon.life -= 10;       
+    enemie.life -= (player.player.damage - enemie.defense);       
     scoreText.text = scoreString + (points += 10 );
-    if(demon.life <= 0)
+    if(enemie.life <= 0)
     {
-        demon.kill();
+        enemie.kill();
     }  
 }
