@@ -8,7 +8,7 @@ let layer;
 //player
 let player;
 let controls = {};
-
+let healthbar;
 
 //enemie
 let demons = [];
@@ -46,18 +46,23 @@ Game.Level1.prototype = {
         */
         map.setCollisionBetween(23,24);
         map.setCollisionBetween(32,34);
+        map.setCollision(0);
         //audio======================================================
         let music = this.add.audio('epic');
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, music);
-        
+        //=====================================================
+        healthbar = this.add.sprite(350, 0,'healthbar');
+        healthbar.fixedToCamera = true;
+        healthbar.width = 100;
         /*
             add player in position x y 
         */  
-        player = new Player(0,3000,this.game);
+        player = new Player(0,3000,this.game,Phaser);
         this.camera.follow(player.player);
         player.player.body.collideWorldBounds = true;
-        player.player.body.gravity.y = 1400;    
+        player.player.body.gravity.y = 1400;
+        player.player.animations.play('right', 5, true);
         //add bullets
         bullets = this.add.group();
         bullets.enableBody = true;
@@ -84,44 +89,54 @@ Game.Level1.prototype = {
             add the controls
         */
         controls = {
-           right: this.input.keyboard.addKey(Phaser.Keyboard.A),
-           left: this.input.keyboard.addKey(Phaser.Keyboard.D),
+           right: this.input.keyboard.addKey(Phaser.Keyboard.D),
+           left: this.input.keyboard.addKey(Phaser.Keyboard.A),
            up: this.input.keyboard.addKey(Phaser.Keyboard.W)
        };      
         //score
         scoreString = 'Score: ';
         scoreText = this.add.text(10,50, scoreString + points, { font: '34px Arial', fill: '#fff'});
-        scoreText.fixedToCamera = true;        
+        scoreText.fixedToCamera = true;
+        map.setTileIndexCallback(0, collisionMagmaHandler, player, layer);   
     },
     update:function(){
        
         /*
             colitions between the player and the world
         */
+        
         this.physics.arcade.collide(player.player,layer);        
         this.physics.arcade.collide(demons[0].demon,layer);
+        
        // this.physics.arcade.collide(demons[1].demon,layer);
         demonsfly[0].demonfly.animations.play('fly', 5, true);
         /*
             animation of the player
         */
-        if(controls.right.isDown)
+        if(controls.right.isDown && player.player.frame < 10)
         { 
            player.right();       
         }
-        if(controls.left.isDown)
+        if(controls.left.isDown && player.player.frame < 10)
         {
             player.left();        
         }
+             
         if(!controls.left.isDown && !controls.right.isDown)
         {
-            player.stop();            
+            
+            if(player.player.health <= 0){
+                
+            }else{                
+                player.stop(); 
+            }
+                           
         }
-        if(controls.up.isDown &&(player.player.body.onFloor() || player.player.body.touching.down && this.time.now > jumpTimer) )
+        if(controls.up.isDown &&  player.player.frame < 10 && (player.player.body.onFloor() || player.player.body.touching.down && this.time.now > jumpTimer ) )
         {
             player.up();            
         }
-        
+                
         /*
             animations of the demons
         */       
@@ -134,7 +149,8 @@ Game.Level1.prototype = {
         }
        
         this.physics.arcade.overlap(bullets, demons[0].demon, collisionHandler, null, this);        
-        this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this); 
+        this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this);
+        
         if(count >= demons.length -1)
         {
             count = 0;
@@ -147,7 +163,7 @@ Game.Level1.prototype = {
     },
     playLevelMusic: function(){
          this.play('', 0, 1, true);
-    }
+    },
 }
 function fire(game,player,bullets){   
     
@@ -182,4 +198,20 @@ function collisionHandler(enemie, bullet)
     {
         enemie.kill();
     }  
+}
+function collisionMagmaHandler()
+{    
+    healthbar.width = this.player.health;
+    this.player.health -= 1;    
+    if(this.player.health <= 0){
+        
+        this.player.health = 0;
+        if(player.player.animations.name === "left")            
+        {
+            player.deathleft();
+        }else if(player.player.animations.name === "right")
+        {
+            player.deathright();
+        }       
+    }
 }

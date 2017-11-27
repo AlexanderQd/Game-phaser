@@ -7,9 +7,10 @@ Game.Preloader.prototype = {
         this.load.tilemap('map','../assets/maps/tilemaps/level1/level1.csv', null, Phaser.Tilemap.CSV);
         this.load.image('tilemappaterns','../assets/maps/tilemaps/level1/patron.png');        
         this.load.image('background','../assets/maps/backgrounds/spooky.png');
-
+        this.load.image('healthbar', '../assets/Character/health.png');
         //player
-        this.load.spritesheet('player', '../assets/Character/Walk/walk.png',56,57,20);
+        //this.load.spritesheet('player', '../assets/Character/Walk/walk.png',56,57,20);
+        this.load.atlas('player','../assets/Character/player.png','../assets/Character/player.json')
         this.load.audio('playershot','../assets/Character/shot/shot.ogg');
         this.load.audio('playerjump','../assets/Character/shot/jump.ogg');
         //shoot
