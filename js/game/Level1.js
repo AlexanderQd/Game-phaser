@@ -29,7 +29,7 @@ Game.Level1.prototype = {
         /*
             background
         */
-        this.add.tileSprite(0,0,3200,6400,'background');       
+        this.add.tileSprite(0,0,6400,3500,'backgroundLevel1');       
         /*
             add the tilemap, with the scale of cubes
         */
@@ -84,14 +84,15 @@ Game.Level1.prototype = {
             
         }*/
         demons[0] = new Demon(600, 100, this.game, Phaser);
-        demonsfly[0]  = new DemonFly(900, 450, this.game, Phaser);      
+        demonsfly[0]  = new DemonFly(1300, 2800, this.game, Phaser);      
         /*
             add the controls
         */
         controls = {
            right: this.input.keyboard.addKey(Phaser.Keyboard.D),
            left: this.input.keyboard.addKey(Phaser.Keyboard.A),
-           up: this.input.keyboard.addKey(Phaser.Keyboard.W)
+           up: this.input.keyboard.addKey(Phaser.Keyboard.W),
+           menu: this.input
        };      
         //score
         scoreString = 'Score: ';

@@ -10,7 +10,7 @@ Game.Sigin = function(game){
         },
         create:function(){    
             
-            this.add.tileSprite(0,0,800,600,'background');
+            this.add.tileSprite(0,0,this.world.width,this.world.height,'backgroundjungle');
             let email = this.add.inputField(this.world.centerX -50, 100, {
                 font: '18px Arial',
                 fill: '#212121',
@@ -36,7 +36,7 @@ Game.Sigin = function(game){
                 placeHolder: 'Password',
                 type: PhaserInput.InputType.password
             });
-            let  button = this.add.button(this.world.centerY, this.world.centerX, 'buttons', function(){           
+            let  buttonSigin = this.add.button(this.world.centerX - 115, this.world.centerY - 150, 'buttonsSigin', function(){           
                 let form = new FormData();                
                 form.append("password", password.value);
                 form.append("email", email.value);            
@@ -46,6 +46,10 @@ Game.Sigin = function(game){
                     param: form
                 });    
             });
+            let buttonMenu = this.add.button(this.world.centerX - 200, this.world.centerY - 50, 'buttonsMenu', () => {
+                this.game.state.start('MainMenu')
+            });
+            
         }        
     }
     

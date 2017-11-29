@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import sequelize from 'sequelize';
-import User from './model';
+import User from './user';
 import Cors from 'cors';
 import formidable from 'formidable';
 
