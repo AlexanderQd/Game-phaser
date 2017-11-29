@@ -49,7 +49,7 @@ Game.Login.prototype = {
             placeHolder: 'Password',
             type: PhaserInput.InputType.password
         });
-        let  button = this.add.button(this.world.centerX - 120, this.world.centerY - 50, 'buttonsLogin', function(){           
+        let  button = this.add.button(this.world.centerX - 120, this.world.centerY - 135, 'buttonsLogin', function(){           
             let form = new FormData();
             form.append("name", name.value);
             form.append("password", password.value);
@@ -61,7 +61,7 @@ Game.Login.prototype = {
             });    
         });
         
-        let mainMenuButton = this.add.button(this.world.centerX - 250 , this.world.centerY + 75, 'buttonsMenu', () => {
+        let mainMenuButton = this.add.button(this.world.centerX - 250 , this.world.centerY - 50, 'buttonsMenu', () => {
             this.game.state.start('MainMenu')
         })
     }        

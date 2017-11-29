@@ -5,6 +5,7 @@ Game.Level1 = function(game){};
 //map
 let map;
 let layer;
+
 //player
 let player;
 let controls = {};
@@ -71,8 +72,6 @@ Game.Level1.prototype = {
         bullets.createMultiple(100, 'bullet');
         bullets.setAll('checkWorldBounds', true);
         bullets.setAll('outOfBoundsKill', true);
-
-        
         
         /*
             add demons in position x y
@@ -92,7 +91,7 @@ Game.Level1.prototype = {
            right: this.input.keyboard.addKey(Phaser.Keyboard.D),
            left: this.input.keyboard.addKey(Phaser.Keyboard.A),
            up: this.input.keyboard.addKey(Phaser.Keyboard.W),
-           menu: this.input
+           menu: this.input.keyboard.addKey(Phaser.Keyboard.ESC)
        };      
         //score
         scoreString = 'Score: ';
@@ -108,6 +107,7 @@ Game.Level1.prototype = {
         
         this.physics.arcade.collide(player.player,layer);        
         this.physics.arcade.collide(demons[0].demon,layer);
+        
         
        // this.physics.arcade.collide(demons[1].demon,layer);
         demonsfly[0].demonfly.animations.play('fly', 5, true);
@@ -151,7 +151,7 @@ Game.Level1.prototype = {
        
         this.physics.arcade.overlap(bullets, demons[0].demon, collisionHandler, null, this);        
         this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this);
-        
+        this.physics.arcade.collide(bullets, layer, collisionHandlerLayer, null, this);
         if(count >= demons.length -1)
         {
             count = 0;
@@ -159,11 +159,18 @@ Game.Level1.prototype = {
             count ++;
         }
         
-       
+       if(controls.menu.isDown)
+       {           
+           this.menuState();
+       }
         
     },
     playLevelMusic: function(){
          this.play('', 0, 1, true);
+    },
+    menuState: function()
+    {
+        this.game.state.start('MainMenu');
     },
 }
 function fire(game,player,bullets){   
@@ -215,4 +222,8 @@ function collisionMagmaHandler()
             player.deathright();
         }       
     }
+}
+function collisionHandlerLayer(bullet)
+{
+    bullet.kill();
 }
