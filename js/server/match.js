@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import sequelize from './db';
+import User from './user';
 
 const Match = sequelize.define('match', {
     mapID: {
@@ -30,5 +31,5 @@ const Match = sequelize.define('match', {
       defaultValue: 0
     }
 });
-
+Match.hasMany(User,{as: 'players', foreignKey:'MatchId'});
 module.exports = Match;

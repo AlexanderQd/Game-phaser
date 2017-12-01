@@ -39,14 +39,18 @@ Game.Sigin = function(game){
             this.add.button(this.world.centerX - 115, this.world.centerY - 150, 'buttonsSigin', function(){           
                 let url = new URL("http://localhost:3000/user/getUser");
                 params = {email: email.value, password: password.value};
-                Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));         
+                Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
                 fetch(url, {
                     method: "GET",
                     mode: "cors"                    
                 }).then((res) => {                    
                     res.json()
                     this.game.state.start('Level1');
-                });    
+                }); 
+                fetch("http://localhost:3000/match",{
+                    method: "POST",
+                    moder: "cors"
+                }); 
             });
             this.add.button(this.world.centerX - 200, this.world.centerY - 50, 'buttonsMenu', () => {
                 this.game.state.start('MainMenu')
