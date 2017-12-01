@@ -36,17 +36,19 @@ Game.Sigin = function(game){
                 placeHolder: 'Password',
                 type: PhaserInput.InputType.password
             });
-            let  buttonSigin = this.add.button(this.world.centerX - 115, this.world.centerY - 150, 'buttonsSigin', function(){           
-                let form = new FormData();                
-                form.append("password", password.value);
-                form.append("email", email.value);            
-                fetch("http://localhost:3000/user/getId", {
-                    method: "POST",
-                    mode: "cors",
-                    param: form
+            this.add.button(this.world.centerX - 115, this.world.centerY - 150, 'buttonsSigin', function(){           
+                let url = new URL("http://localhost:3000/user/getUser");
+                params = {email: email.value, password: password.value};
+                Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));         
+                fetch(url, {
+                    method: "GET",
+                    mode: "cors"                    
+                }).then((res) => {                    
+                    res.json()
+                    this.game.state.start('Level1');
                 });    
             });
-            let buttonMenu = this.add.button(this.world.centerX - 200, this.world.centerY - 50, 'buttonsMenu', () => {
+            this.add.button(this.world.centerX - 200, this.world.centerY - 50, 'buttonsMenu', () => {
                 this.game.state.start('MainMenu')
             });
             

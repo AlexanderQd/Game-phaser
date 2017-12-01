@@ -9,9 +9,7 @@
     "morgan": "^1.9.0",
     "pg": "^7.4.0",
     "pg-hstore": "^2.3.2",
-    "phaser": "^2.6.2",
-    "sequelize": "^4.22.8",
-    "yarn": "^1.3.2"
+    "sequelize": "^4.22.8"
   },
   "devDependencies": {
     "@orange-games/phaser-input": "^2.0.5",
@@ -19,23 +17,21 @@
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1"
   },
-  "name": "Game-phaser",
-  "version": "1.0.0",
+  "name": "infernus-dragon",
+  "version": "0.0.2",
+  "description": "the best platform game in the world",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node js/server/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlexanderQd/Game-phaser.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Alexander Quintana Díaz",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AlexanderQd/Game-phaser/issues"
   },
-  "homepage": "https://github.com/AlexanderQd/Game-phaser#readme",
-  "description": ""
+  "homepage": "https://github.com/AlexanderQd/Game-phaser#readme"
 }

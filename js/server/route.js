@@ -21,12 +21,17 @@ router.post('/user/create', Cors(), (req, res) => {
     
 });
 let user;
-router.get('/user/getId', Cors(), (req, res) => {
-    let form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) =>{
-      user =   User.findOne({
-            where: {name: fields.name}
-        }).then(console.log(user.id));
-    });
+router.get('/user/getUser', Cors(), (req, res) => {    
+    User.findOne({
+            where: {
+                email: req.query.email,
+                password: req.query.password
+            }
+        }).then(data => {
+            res.json({
+                id: data.id
+            });
+        });
+    
 });
 export default router;
