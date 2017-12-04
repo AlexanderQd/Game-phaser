@@ -46,11 +46,7 @@ Game.Sigin = function(game){
                 }).then((res) => {                    
                     res.json()
                     this.game.state.start('Level1');
-                }); 
-                fetch("http://localhost:3000/match",{
-                    method: "POST",
-                    moder: "cors"
-                }); 
+                });                
             });
             this.add.button(this.world.centerX - 200, this.world.centerY - 50, 'buttonsMenu', () => {
                 this.game.state.start('MainMenu')

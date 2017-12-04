@@ -3,24 +3,12 @@ import sequelize from './db';
 import User from './user';
 
 const Match = sequelize.define('match', {
-    mapID: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
-    playerID: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    userID: {
-      type: Sequelize.INTEGER,
-      allowNull: false,      
-    },
-    nivelPlayer: {
+    player_level: {
       type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: 1
     },
-    enemyState: {
+    enemy_state: {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: 'Alive'
@@ -31,5 +19,6 @@ const Match = sequelize.define('match', {
       defaultValue: 0
     }
 });
-Match.hasMany(User,{as: 'players', foreignKey:'MatchId'});
+
+
 module.exports = Match;

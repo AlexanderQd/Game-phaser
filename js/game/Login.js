@@ -49,11 +49,11 @@ Game.Login.prototype = {
             placeHolder: 'Password',
             type: PhaserInput.InputType.password
         });
-        let  button = this.add.button(this.world.centerX - 120, this.world.centerY - 135, 'buttonsLogin', function(){           
+        this.add.button(this.world.centerX - 120, this.world.centerY - 135, 'buttonsLogin', function(){           
             let form = new FormData();
             form.append("name", name.value);
             form.append("password", password.value);
-            form.append("email", email.value);            
+            form.append("email", email.value);          
             fetch("http://localhost:3000/user/create", {
                 method: "POST",
                 mode: "cors",
@@ -61,7 +61,7 @@ Game.Login.prototype = {
             });    
         });
         
-        let mainMenuButton = this.add.button(this.world.centerX - 250 , this.world.centerY - 50, 'buttonsMenu', () => {
+        this.add.button(this.world.centerX - 250 , this.world.centerY - 50, 'buttonsMenu', () => {
             this.game.state.start('MainMenu')
         })
     }        
