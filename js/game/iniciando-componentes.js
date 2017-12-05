@@ -7,7 +7,8 @@ window.onload = function()
     game.state.add('MainMenu', Game.MainMenu);
     game.state.add('Sigin', Game.Sigin);
     game.state.add('Login', Game.Login);
-    game.state.add('Level1',Game.Level1);
+    game.state.add('Level1', Game.Level1);
+    game.state.add('Admin', Game.Admin);
 
     game.state.start('Boot');
     

@@ -4,13 +4,14 @@ import User from './user';
 import Cors from 'cors';
 import formidable from 'formidable';
 import Match from './match';
+import GameMaps from './map';
+import Character from './character';
 
 const router = new Router();
 
 router.post('/user/create', Cors(), (req, res) => {
     let form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
-        User.sync().then(() => {
+    form.parse(req, (err, fields, files) => {       
             User.create({                
                 name: fields.name,
                 password: fields.password,
@@ -23,9 +24,7 @@ router.post('/user/create', Cors(), (req, res) => {
            ).then((user) =>{           
                     res.json({message: 'Succesfull, user create'})         
               });                 
-        });
-    });
-    
+        });    
 });
 
 router.get('/user/getUser', Cors(), (req, res) => {    
@@ -40,5 +39,16 @@ router.get('/user/getUser', Cors(), (req, res) => {
             });
         });
     
+});
+
+router.delete('/deleteUser', Cors(), (req, res)=> {
+       let form = new formidable.IncomingForm();    
+        form.parse(req, (err, fields, file) => {           
+            User.findOne({
+                where: { email: fields.email }
+            }).then(user => {
+                user.destroy();
+            });
+        });     
 });
 export default router;

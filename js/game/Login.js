@@ -49,16 +49,35 @@ Game.Login.prototype = {
             placeHolder: 'Password',
             type: PhaserInput.InputType.password
         });
-        this.add.button(this.world.centerX - 120, this.world.centerY - 135, 'buttonsLogin', function(){           
-            let form = new FormData();
-            form.append("name", name.value);
-            form.append("password", password.value);
-            form.append("email", email.value);          
-            fetch("http://localhost:3000/user/create", {
-                method: "POST",
-                mode: "cors",
-                body: form
-            });    
+        this.add.button(this.world.centerX - 120, this.world.centerY - 135, 'buttonsLogin', function(){
+            let value =  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;      
+            if(value.test(email.value))
+            {                 
+                if(password.value.length <= 15 && password.value.length > 5){
+
+                    if(name.value.length <= 20 && name.value.length > 4)
+                    {
+                        let form = new FormData();
+                        form.append("name", name.value);
+                        form.append("password", password.value);
+                        form.append("email", email.value);          
+                        fetch("http://localhost:3000/user/create", {
+                            method: "POST",
+                            mode: "cors",
+                            body: form
+                        });
+                    }else{
+                        name.setText("4 a 20 caracteres")
+                    }
+
+                }else{
+                    password.resetText();
+                }
+                 
+            }else{                
+                email.setText("valor incorrecto");
+            }
+          
         });
         
         this.add.button(this.world.centerX - 250 , this.world.centerY - 50, 'buttonsMenu', () => {

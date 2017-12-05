@@ -1,6 +1,5 @@
 import Sequelize from 'sequelize';
 import sequelize from './db';
-import User from './user';
 
 const Match = sequelize.define('match', {
     player_level: {

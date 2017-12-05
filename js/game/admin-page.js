@@ -1,12 +1,11 @@
-
-Game.Sigin = function(game){
+Game.Admin = function(game){
     
 };
-    Game.Sigin.prototype = {
+    Game.Admin.prototype = {
         preload:function(){ 
         
             this.add.plugin(PhaserInput.Plugin);
-           
+            this.load.image('delete', '../../assets/button/delete.png');
         },
         create:function(){    
             
@@ -36,23 +35,17 @@ Game.Sigin = function(game){
                 placeHolder: 'Password',
                 type: PhaserInput.InputType.password
             });
-            this.add.button(this.world.centerX - 115, this.world.centerY - 150, 'buttonsSigin', function(){
-                if(email.value ==="admin@gmail.com" && password.value === "admin")
+            this.add.button(this.world.centerX - 115, this.world.centerY - 150, 'delete', function(){
+                if(password.value === "admin")
                 {
-                    this.game.state.start('Admin');
-                }else{
-                    let url = new URL("http://localhost:3000/user/getUser");
-                    params = {email: email.value, password: password.value};
-                    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-                    fetch(url, {
-                        method: "GET",
-                        mode: "cors"                    
-                    }).then((res) => {                    
-                        console.log(res);
-                        //this.game.state.start('Level1');
-                    }); 
-                }    
-                              
+                    let form = new FormData();
+                    form.append("email", email.value);
+                    fetch("http://localhost:3000/deleteUser",{
+                        method: "delete",
+                        mode: "cors",
+                        body: form                     
+                    });  
+                }                            
             });
             this.add.button(this.world.centerX - 200, this.world.centerY - 50, 'buttonsMenu', () => {
                 this.game.state.start('MainMenu')

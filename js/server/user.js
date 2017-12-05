@@ -4,15 +4,15 @@ import Match from './match';
 
 const User = sequelize.define('user', {
     name: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(20),
       allowNull: false,
     },
     password: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(15),
       allowNull: false,
     },
     email: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(20),
       allowNull: false,
     }
   });
