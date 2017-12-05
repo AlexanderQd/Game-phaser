@@ -34,6 +34,6 @@ Game.Preloader.prototype = {
         this.load.audio('epic', '../assets/audio/level1/level1.ogg');
     },
     create:function(){
-        this.game.state.start('MainMenu');
+        this.game.state.start('Admin');
     }
 }

@@ -19,12 +19,13 @@ Game.MainMenu.prototype = {
         this.game.add.button(this.world.centerX - 150, this.world.centerY - 175, 'buttonsStart', () => {
             this.game.state.start('Level1');
         });
-        this.game.add.button(this.world.centerX - 150, this.world.centerY - 70, 'buttonsLogin', () => {
+        this.game.add.button(this.world.centerX - 150, this.world.centerY - 70, 'buttonsSigin', () => {           
+            this.game.state.start('Sigin');
+        });
+        this.game.add.button(this.world.centerX - 150, this.world.centerY + 50, 'buttonsLogin', () => {
             this.game.state.start('Login');
         });
 
-        this.game.add.button(this.world.centerX - 150, this.world.centerY + 50, 'buttonsSigin', () => {           
-           this.game.state.start('Sigin');
-       });
+
     }
 }

@@ -51,4 +51,14 @@ router.delete('/deleteUser', Cors(), (req, res)=> {
             });
         });     
 });
+router.delete('/deleteMatch', Cors(), (req, res)=> {
+    let form = new formidable.IncomingForm();    
+     form.parse(req, (err, fields, file) => {           
+         Match.findOne({
+             where: { user_id: fields.user_id }
+         }).then(match => {
+             match.destroy();
+         });
+     });     
+});
 export default router;

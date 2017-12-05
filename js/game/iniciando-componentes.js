@@ -9,6 +9,11 @@ window.onload = function()
     game.state.add('Login', Game.Login);
     game.state.add('Level1', Game.Level1);
     game.state.add('Admin', Game.Admin);
+    game.state.add('DelUsers', Game.DelUsers);
+    game.state.add('ConsultScores', Game.ConsultScores);
+    game.state.add('DelMatchs', Game.DelMatchs);
+    game.state.add('ListUsers', Game.ListUsers);
+    
 
     game.state.start('Boot');
     
