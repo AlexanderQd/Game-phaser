@@ -14,16 +14,16 @@ Game.Admin = function(game){
         create:function(){    
 
             this.add.button(this.world.centerX - 350, this.world.centerY - 300, 'delete-users', function(){
-                                    
+                this.game.state.start('DelUsers')           
             });
             this.add.button(this.world.centerX - 350, this.world.centerY -200, 'consult-scores', function(){
-                
+                this.game.state.start('ConsultScores')
             });
             this.add.button(this.world.centerX - 350, this.world.centerY - 100, 'delete-match', function(){
-                
+                this.game.state.start('DelMatchs')
             });
             this.add.button(this.world.centerX - 350, this.world.centerY, 'list-users', function(){
-                
+                this.game.state.start('ListUsers')
             });
             this.add.button(this.world.centerX - 350, this.world.centerY + 100, 'menu', () => {
                 this.game.state.start('MainMenu')

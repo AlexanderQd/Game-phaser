@@ -23,7 +23,7 @@ Game.DelUsers = function(game){
                 type: PhaserInput.InputType.text
             });    
          
-            let password = this.add.inputField(this.world.centerX -50, 200, {
+            let password = this.add.inputField(this.world.centerX -50, 150, {
                 font: '18px Arial',
                 fill: '#212121',
                 fontWeight: 'bold',

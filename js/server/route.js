@@ -6,8 +6,10 @@ import formidable from 'formidable';
 import Match from './match';
 import GameMaps from './map';
 import Character from './character';
+import Scores from './scores';
 
 const router = new Router();
+
 
 router.post('/user/create', Cors(), (req, res) => {
     let form = new formidable.IncomingForm();
@@ -18,9 +20,14 @@ router.post('/user/create', Cors(), (req, res) => {
                 email: fields.email,
                 matchs: [{    nivelPlayer: 1,
                               enemyState: 'alive',
-                              score: 0,}]
+                              score: 0,
+                              map_id: 1 }],
+                score: [{
+
+                }]
+                
             },
-              {include:  [{model: Match, as: 'matchs'}]}
+              {include:  [{model: Match, as: 'matchs'}, {model: Scores, as: 'score'}]}
            ).then((user) =>{           
                     res.json({message: 'Succesfull, user create'})         
               });                 
@@ -47,18 +54,27 @@ router.delete('/deleteUser', Cors(), (req, res)=> {
             User.findOne({
                 where: { email: fields.email }
             }).then(user => {
-                user.destroy();
+                Match.findOne({
+                    where:{
+                        user_id: user.id
+                    }
+                }).then(match => {
+                    match.destroy();
+                    user.destroy();
+                });                
             });
         });     
 });
-router.delete('/deleteMatch', Cors(), (req, res)=> {
+/*router.delete('/deleteMatch', Cors(), (req, res)=> {
     let form = new formidable.IncomingForm();    
-     form.parse(req, (err, fields, file) => {           
-         Match.findOne({
-             where: { user_id: fields.user_id }
-         }).then(match => {
-             match.destroy();
-         });
+     form.parse(req, (err, fields, file) => {
+         User.findOne({
+             where: { email: fields.email }
+         }).then(user => {
+             Match.findOne({
+                where: {id: user.id }
+             }).then(console.log("entra en el primero"));             
+         }).then(console.log("Entra en el segundo"));
      });     
-});
+});*/
 export default router;

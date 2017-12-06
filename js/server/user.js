@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize';
 import sequelize from './db';
 import Match from './match';
+import Score from './scores';
 
 const User = sequelize.define('user', {
     name: {
@@ -17,4 +18,5 @@ const User = sequelize.define('user', {
     }
   });
 User.hasMany(Match,{as: 'matchs', foreignKey: 'user_id'});
+User.hasOne(Score, {as:'score', foreignKey: 'user_id'});
 module.exports = User;
