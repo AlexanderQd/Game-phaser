@@ -3,7 +3,7 @@ Game.MainMenu = function(game){
 Game.MainMenu.prototype = {
     preload:function(){ 
         //load visual assets
-        this.load.image('backgroundjungle','../assets/maps/backgrounds/jungle.png');
+        this.load.image('backgroundjungle','../../assets/maps/backgrounds/jungle.png');
         //button        
         /*this.load.spritesheet('buttonsSave','../assets/button/save.png');
         this.load.spritesheet('buttonsSigin','../assets/button/sigin.png');

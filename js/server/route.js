@@ -1,17 +1,37 @@
 import express, { Router } from 'express';
 import sequelize from 'sequelize';
-import User from './user';
-import Cors from 'cors';
+import User from './models/user';
 import formidable from 'formidable';
-import Match from './match';
-import GameMaps from './map';
-import Character from './character';
-import Scores from './scores';
+import Match from './models/match';
+import Character from './models/character';
+import Scores from './models/scores';
+import Level1 from './models/Level1';
+import DemonFly from './models/demon-fly';
+import DemonWalk from './models/demon-walk';
+
 
 const router = new Router();
 
 
-router.post('/user/create', Cors(), (req, res) => {
+DemonFly.sync({force: true}).then(()=>{
+    DemonFly.create({
+        health: 150,
+        speed: 130,
+        defense: 5,
+        attack: 15,
+     });
+});
+DemonWalk.sync({force: true}).then(()=>{
+    DemonWalk.create({
+        health: 100,
+        speed: 100,
+        defense: 0,
+        attack: 5,
+     });
+});
+
+
+router.post('/user/create', (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {       
             User.create({                
@@ -34,7 +54,7 @@ router.post('/user/create', Cors(), (req, res) => {
         });    
 });
 
-router.get('/user/getUser', Cors(), (req, res) => {    
+router.get('/user/getUser', (req, res) => {    
     User.findOne({
             where: {
                 email: req.query.email,
@@ -48,7 +68,7 @@ router.get('/user/getUser', Cors(), (req, res) => {
     
 });
 
-router.delete('/deleteUser', Cors(), (req, res)=> {
+router.delete('/deleteUser', (req, res)=> {
        let form = new formidable.IncomingForm();    
         form.parse(req, (err, fields, file) => {           
             User.findOne({

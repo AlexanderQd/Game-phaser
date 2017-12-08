@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import sequelize from './db';
+import sequelize from '../db';
 import Match from './match';
 
 const Character = sequelize.define('character', {
