@@ -8,7 +8,8 @@ let layer;
 let chests = [];
 let loot;
 let spriteloot;
-
+const spawnchest = 24;
+let collisionChestCount = 0;
 //player
 let player;
 let controls = {};
@@ -19,7 +20,7 @@ let emptybarmana;
 //enemie
 let demons = [];
 let demonsfly = [];
-let count;
+let walkDemonCollisionCount = 0;
 //shoot
 let bullets;
 let fireRate = 500;
@@ -38,7 +39,7 @@ Game.Level1.prototype = {
     },
     create:function()
     {
-        count = 0;
+        
         /*
             background
         */
@@ -64,12 +65,12 @@ Game.Level1.prototype = {
         let music = this.add.audio('epic');
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, music);
-        //=====================================================
-        emptybarhealth = this.add.sprite(350, 20, 'emptybar');
+        //=====================================================        
+        emptybarhealth = this.add.sprite(window.innerWidth / 2 - 103, 20, 'emptybar');
         emptybarhealth.fixedToCamera = true;
         emptybarhealth.width = 110;
-
-        emptybarmana = this.add.sprite(600, 20, 'emptybar');
+        
+        emptybarmana = this.add.sprite(window.innerWidth / 2 + 80, 20, 'emptybar');
         emptybarmana.fixedToCamera = true;
         emptybarmana.width = 110;
 
@@ -116,8 +117,17 @@ Game.Level1.prototype = {
         demonsfly[0]  = new DemonFly(1300, 2800, this.game, Phaser);
 
         //chests
-        chests[0] = new Chest(100, 3000, this.game);
-
+        let mapArray = layer.getTiles(0, 0, this.game.world.width, this.game.world.height);
+        let countChest  = 0;
+        for(let i = 0; i < mapArray.length; i++)
+        {
+            if(mapArray[i].index === spawnchest){
+                chests[countChest] = new Chest(mapArray[i].worldX + 50, mapArray[i].worldY, this.game);
+                countChest++;
+            }
+        }
+        
+        
         /*
             add the controls
         */
@@ -141,7 +151,7 @@ Game.Level1.prototype = {
         
         this.physics.arcade.collide(player.player,layer);        
         this.physics.arcade.collide(demons[0].demon,layer);
-        this.physics.arcade.collide(chests[0].chest, layer);
+        this.physics.arcade.collide(chests[collisionChestCount].chest, layer);
      
         this.physics.arcade.collide(spriteloot, layer);
         this.physics.arcade.overlap(spriteloot, player.player, collisionHandlerLoot, null, this);
@@ -149,10 +159,15 @@ Game.Level1.prototype = {
         this.physics.arcade.overlap(bullets, demons[0].demon, collisionHandler, null, this);
         this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this);
         this.physics.arcade.collide(bullets, layer, collisionHandlerLayer, null, this);
-        this.physics.arcade.collide(bullets, chests[0].chest, collisionChestHandler, null, this);
+        this.physics.arcade.collide(bullets, chests[collisionChestCount].chest, collisionChestHandler, null, this);
 
         //this.physics.arcade.collide(demons[1].demon,layer);
         demonsfly[0].demonfly.animations.play('fly', 5, true);
+
+        //
+        
+        healthbar.width = player.player.health;
+        manabar.width = player.player.mana;
         /*
             animation of the player
         */
@@ -192,18 +207,21 @@ Game.Level1.prototype = {
         }
        
 
-        if(count >= demons.length -1)
+        if(walkDemonCollisionCount >= demons.length -1)
         {
-            count = 0;
+            walkDemonCollisionCount = 0;
         }else{
-            count ++;
+            walkDemonCollisionCount ++;
         }
         
        if(controls.menu.isDown)
        {           
            this.menuState();
        }
-        
+       collisionChestCount++;
+       if(collisionChestCount >= chests.length){
+           collisionChestCount = 0;
+       }
     },
     playLevelMusic: function(){
          this.play('', 0, 1, true);
@@ -235,8 +253,7 @@ function fire(game,player,bullets){
             bullet.animations.play('right');
             bullet.body.velocity.x = 400; 
         }
-        player.mana -= 5;
-        manabar.width = player.mana;
+        player.mana -= 5;       
     }
 }
 function collisionHandler(enemie, bullet)

@@ -2,10 +2,9 @@ class Chest{
     constructor(x, y, game){
         this.chest = game.add.sprite(x, y, 'chest');
         this.chest.anchor.setTo(1);
-        this.chest.scale.setTo(1);
+        this.chest.scale.setTo(1.5);
         game.physics.arcade.enable(this.chest);
-        this.chest.body.collideWorldBounds = true;
-        this.chest.body.gravity.y = 1400;
+        this.chest.body.collideWorldBounds = true;        
         this.chest.spawnloot = ['powerpotion','manapotion','lifepotion'];        
     }
     spawn(){
