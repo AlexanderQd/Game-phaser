@@ -5,12 +5,12 @@ Game.MainMenu.prototype = {
         //load visual assets
         this.load.image('backgroundjungle','../../assets/maps/backgrounds/jungle.png');
         //button        
-        /*this.load.spritesheet('buttonsSave','../assets/button/save.png');
+        this.load.spritesheet('buttonsSave','../assets/button/save.png');
         this.load.spritesheet('buttonsSigin','../assets/button/sigin.png');
         this.load.spritesheet('buttonsLogin','../assets/button/login.png');
         this.load.spritesheet('buttonsStart','../assets/button/start.png');
         this.load.spritesheet('buttonsDelete','../assets/button/delete.png');
-        this.load.spritesheet('buttonsSearch','../assets/button/search.png');*/
+        this.load.spritesheet('buttonsSearch','../assets/button/search.png');
     },
     create:function(){
                

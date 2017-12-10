@@ -46,7 +46,7 @@ class Player {
     } 
     setDamage(damage)
     {
-        this.player.damage = damage;
+        this.player.damage += damage;
     }
     setlevel()
     {
@@ -67,5 +67,17 @@ class Player {
     playerkill()
     {       
         this.player.kill();
+    }
+    setHealth(x){
+        this.player.health += x;
+        if(this.player.health >= 100){
+            this.player.health = 100;
+        }
+    }
+    setMana(x){
+        this.player.mana += x;
+        if(this.player.mana >= 100){
+            this.player.mana = 100;
+        }
     }
 }

@@ -5,12 +5,17 @@ Game.Level1 = function(game){};
 //map
 let map;
 let layer;
+let chests = [];
+let loot;
+let spriteloot;
 
 //player
 let player;
 let controls = {};
 let healthbar;
-
+let manabar;
+let emptybarhealth;
+let emptybarmana;
 //enemie
 let demons = [];
 let demonsfly = [];
@@ -24,6 +29,13 @@ let points = 0;
 let scoreString = '';
 let scoreText;
 Game.Level1.prototype = {
+    preload:function(){
+        this.load.tilemap('map','../../assets/maps/tilemaps/level1/level1.csv', null, Phaser.Tilemap.CSV);
+        this.load.image('tilemappaterns','../../assets/maps/tilemaps/level1/patron.png');        
+        this.load.image('backgroundhell','../../assets/maps/backgrounds/spooky.png');
+        this.load.image('backgroundLevel1','../../assets/maps/backgrounds/redi/spooky.png');
+        
+    },
     create:function()
     {
         count = 0;
@@ -53,9 +65,23 @@ Game.Level1.prototype = {
         music.play('', 0, 1, true);
         music.onLoop.add(this.playLevelMusic, music);
         //=====================================================
-        healthbar = this.add.sprite(350, 0,'healthbar');
+        emptybarhealth = this.add.sprite(350, 20, 'emptybar');
+        emptybarhealth.fixedToCamera = true;
+        emptybarhealth.width = 110;
+
+        emptybarmana = this.add.sprite(600, 20, 'emptybar');
+        emptybarmana.fixedToCamera = true;
+        emptybarmana.width = 110;
+
+        healthbar = this.add.sprite(emptybarhealth.x + 6 , emptybarhealth.y + 4,'healthbar');
         healthbar.fixedToCamera = true;
         healthbar.width = 100;
+
+        manabar = this.add.sprite(emptybarmana.x + 6, emptybarmana.y + 4, 'manabar');
+        manabar.fixedToCamera = true;
+        manabar.width = 100;
+
+
         /*
             add player in position x y 
         */  
@@ -64,6 +90,7 @@ Game.Level1.prototype = {
         player.player.body.collideWorldBounds = true;
         player.player.body.gravity.y = 1400;
         player.player.animations.play('right', 5, true);
+        
         //add bullets
         bullets = this.add.group();
         bullets.enableBody = true;
@@ -72,7 +99,10 @@ Game.Level1.prototype = {
         bullets.createMultiple(100, 'bullet');
         bullets.setAll('checkWorldBounds', true);
         bullets.setAll('outOfBoundsKill', true);
-        
+
+        //potions
+
+
         /*
             add demons in position x y
         */
@@ -83,7 +113,11 @@ Game.Level1.prototype = {
             
         }*/
         demons[0] = new Demon(600, 100, this.game, Phaser);
-        demonsfly[0]  = new DemonFly(1300, 2800, this.game, Phaser);      
+        demonsfly[0]  = new DemonFly(1300, 2800, this.game, Phaser);
+
+        //chests
+        chests[0] = new Chest(100, 3000, this.game);
+
         /*
             add the controls
         */
@@ -102,14 +136,22 @@ Game.Level1.prototype = {
     update:function(){
        
         /*
-            colitions between the player and the world
+            colitions 
         */
         
         this.physics.arcade.collide(player.player,layer);        
         this.physics.arcade.collide(demons[0].demon,layer);
-        
-        
-       // this.physics.arcade.collide(demons[1].demon,layer);
+        this.physics.arcade.collide(chests[0].chest, layer);
+     
+        this.physics.arcade.collide(spriteloot, layer);
+        this.physics.arcade.overlap(spriteloot, player.player, collisionHandlerLoot, null, this);
+     
+        this.physics.arcade.overlap(bullets, demons[0].demon, collisionHandler, null, this);
+        this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this);
+        this.physics.arcade.collide(bullets, layer, collisionHandlerLayer, null, this);
+        this.physics.arcade.collide(bullets, chests[0].chest, collisionChestHandler, null, this);
+
+        //this.physics.arcade.collide(demons[1].demon,layer);
         demonsfly[0].demonfly.animations.play('fly', 5, true);
         /*
             animation of the player
@@ -149,9 +191,7 @@ Game.Level1.prototype = {
             fire(this.game,player.player,bullets);            
         }
        
-        this.physics.arcade.overlap(bullets, demons[0].demon, collisionHandler, null, this);        
-        this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this);
-        this.physics.arcade.collide(bullets, layer, collisionHandlerLayer, null, this);
+
         if(count >= demons.length -1)
         {
             count = 0;
@@ -175,7 +215,7 @@ Game.Level1.prototype = {
 }
 function fire(game,player,bullets){   
     
-    if(game.time.now > nextFire && bullets.countDead() > 0)
+    if(game.time.now > nextFire && bullets.countDead() > 0 && player.mana >= 5)
     {
         
         nextFire = game.time.now + fireRate;
@@ -188,18 +228,20 @@ function fire(game,player,bullets){
         {  
             bullet.reset(player.x - 75 , player.y - 15);
             bullet.animations.play('left');
-            bullet.body.velocity.x = - 400;
+            bullet.body.velocity.x = - 400;            
             
         }else{
             bullet.reset(player.x + 20 , player.y -15);
             bullet.animations.play('right');
             bullet.body.velocity.x = 400; 
         }
+        player.mana -= 5;
+        manabar.width = player.mana;
     }
 }
 function collisionHandler(enemie, bullet)
 {   
-    bullet.kill();
+    bullet.kill();    
     enemie.life -= (player.player.damage - enemie.defense);       
     scoreText.text = scoreString + (points += 10 );
     if(enemie.life <= 0)
@@ -226,4 +268,25 @@ function collisionMagmaHandler()
 function collisionHandlerLayer(bullet)
 {
     bullet.kill();
+}
+
+function collisionChestHandler(chest, bullet){
+    bullet.kill();
+    
+    let img = chests[0].selectItem();
+    loot = new Loot(chest.x, chest.y - 20, this.game, img);    
+    spriteloot = loot.loot;
+    chest.kill();    
+}
+function collisionHandlerLoot(potion){
+    
+    switch(potion.key){
+        case 'powerpotion': player.setDamage(2);
+            break;
+        case 'manapotion': player.setMana(10);
+            break;
+        case 'lifepotion': player.setHealth(10);
+            break;
+    }
+    potion.destroy();
 }
