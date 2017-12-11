@@ -1,6 +1,6 @@
 
 
-Game.Level1 = function(game){};
+Game.testmap = function(game){};
 
 //map
 let map;
@@ -9,6 +9,7 @@ let chests = [];
 let loot;
 let spriteloot;
 const spawnchest = 24;
+const spawnWalkDemon = 0;
 let collisionChestCount = 0;
 //player
 let player;
@@ -29,11 +30,10 @@ let nextFire = 0;
 let points = 0;
 let scoreString = '';
 let scoreText;
-Game.Level1.prototype = {
+Game.testmap.prototype = {
     preload:function(){
-        this.load.tilemap('map','../../assets/maps/tilemaps/level1/level1.csv', null, Phaser.Tilemap.CSV);
-        this.load.image('tilemappaterns','../../assets/maps/tilemaps/level1/patron.png');        
-        this.load.image('backgroundhell','../../assets/maps/backgrounds/spooky.png');
+        this.load.tilemap('map','../../assets/maps/tilemaps/level1/testtilemap.csv', null, Phaser.Tilemap.CSV);
+        this.load.image('tilemappaterns','../../assets/maps/tilemaps/level1/pattern.png'); 
         this.load.image('backgroundLevel1','../../assets/maps/backgrounds/redi/spooky.png');
         
     },
@@ -43,7 +43,8 @@ Game.Level1.prototype = {
         /*
             background
         */
-        this.add.tileSprite(0,0,6400,3500,'backgroundLevel1');       
+     
+        this.add.tileSprite(0,0,1280, 1280, 'backgroundLevel1');       
         /*
             add the tilemap, with the scale of cubes
         */
@@ -59,8 +60,6 @@ Game.Level1.prototype = {
             collitions with cubes of component the map
         */
         map.setCollisionBetween(23,24);
-        map.setCollisionBetween(32,34);
-        map.setCollision(0);
         //audio======================================================
         let music = this.add.audio('epic');
         music.play('', 0, 1, true);
@@ -86,7 +85,7 @@ Game.Level1.prototype = {
         /*
             add player in position x y 
         */  
-        player = new Player(0,3000,this.game,Phaser);
+        player = new Player(0, 1000,this.game,Phaser);
         this.camera.follow(player.player);
         player.player.body.collideWorldBounds = true;
         player.player.body.gravity.y = 1400;
@@ -101,32 +100,24 @@ Game.Level1.prototype = {
         bullets.setAll('checkWorldBounds', true);
         bullets.setAll('outOfBoundsKill', true);
 
-        //potions
-
-
-        /*
-            add demons in position x y
-        */
-       /* for(let i = 0; i < 2; i++)
-        {
-            demons[i] = new Demon(600,100,this.game,Phaser);
-            demons[i] = new Demon(1200,100,this.game,Phaser);
-            
-        }*/
-        demons[0] = new Demon(600, 100, this.game, Phaser);
-        demonsfly[0]  = new DemonFly(1300, 2800, this.game, Phaser);
-
         //chests
         let mapArray = layer.getTiles(0, 0, this.game.world.width, this.game.world.height);
         let countChest  = 0;
+        let countWalkDemon = 0;
         for(let i = 0; i < mapArray.length; i++)
         {
             if(mapArray[i].index === spawnchest){
                 chests[countChest] = new Chest(mapArray[i].worldX + 50, mapArray[i].worldY, this.game);
                 countChest++;
             }
+            if(mapArray[i].index === spawnWalkDemon){
+                demons[countWalkDemon] = new Demon(mapArray[i].worldX , mapArray[i].worldY, this.game, Phaser);
+                countWalkDemon++;
+            }
         }
+     
         
+        demonsfly[0]  = new DemonFly(1300, 2800, this.game, Phaser);
         
         /*
             add the controls
@@ -141,7 +132,7 @@ Game.Level1.prototype = {
         scoreString = 'Score: ';
         scoreText = this.add.text(10,50, scoreString + points, { font: '34px Arial', fill: '#fff'});
         scoreText.fixedToCamera = true;
-        map.setTileIndexCallback(0, collisionMagmaHandler, player, layer);   
+        map.setTileIndexCallback(1, collisionMagmaHandler, demons, layer);   
     },
     update:function(){
        
@@ -149,8 +140,14 @@ Game.Level1.prototype = {
             colitions 
         */
         
+        
         this.physics.arcade.collide(player.player,layer);        
         this.physics.arcade.collide(demons[0].demon,layer);
+        this.physics.arcade.collide(demons[1].demon,layer);
+        this.physics.arcade.collide(demons[2].demon,layer);
+        this.physics.arcade.collide(demons[3].demon,layer);
+        this.physics.arcade.collide(demons[4].demon,layer);
+
         this.physics.arcade.collide(chests[collisionChestCount].chest, layer);
      
         this.physics.arcade.collide(spriteloot, layer);
@@ -198,7 +195,7 @@ Game.Level1.prototype = {
         /*
             animations of the demons
         */       
-        demons[0].patrol();
+        //demons[walkDemonCollisionCount].patrol();
         demonsfly[0].fly();
         //shooting
         if(this.input.activePointer.isDown)
@@ -206,23 +203,22 @@ Game.Level1.prototype = {
             fire(this.game,player.player,bullets);            
         }
        
-
-        if(walkDemonCollisionCount >= demons.length -1)
-        {
-            walkDemonCollisionCount = 0;
-        }else{
-            walkDemonCollisionCount ++;
-        }
-        
        if(controls.menu.isDown)
        {           
            this.menuState();
        }
+
+       //=======================================================================================
        collisionChestCount++;
        if(collisionChestCount >= chests.length){
            collisionChestCount = 0;
        }
-    
+
+       //=======================================================================================
+       walkDemonCollisionCount++;
+       if(walkDemonCollisionCount >= demons.length){
+        walkDemonCollisionCount = 0;
+       }
     },
     playLevelMusic: function(){
          this.play('', 0, 1, true);
@@ -267,8 +263,8 @@ function collisionHandler(enemie, bullet)
         enemie.kill();
     }  
 }
-function collisionMagmaHandler()
-{    
+function collisionMagmaHandler(demon)
+{   /* 
     healthbar.width = this.player.health;
     this.player.health -= 1;    
     if(this.player.health <= 0){
@@ -281,7 +277,9 @@ function collisionMagmaHandler()
         {
             player.deathright();
         }       
-    }
+    }*/
+    
+    
 }
 function collisionHandlerLayer(bullet)
 {

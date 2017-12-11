@@ -22,6 +22,7 @@ class Demon
         this.demon.body.gravity.y = 1400;
         this.demon.defense = 0;
         
+        this.right();
     }
     left()
     {        
@@ -32,7 +33,7 @@ class Demon
     {
         this.demon.animations.play('right',5,true);
         this.demon.body.velocity.x = - this.demon.speed;
-    }
+    }/*
     patrol()
     {     
         if(this.demon.position.x >= this.demon.positionleft)
@@ -43,5 +44,5 @@ class Demon
         {
            this.left();
         }
-    }
+    }*/
 }
