@@ -15,6 +15,8 @@ class Player {
         this.player.mana = 100;
         this.player.level = 1;
         this.player.health = 100;
+        this.player.maxMana = 100;
+        this.player.maxHealth = 100;
         this.player.shotsound = game.add.audio('playershot');
         this.player.jumpsound = game.add.audio('playerjump');
         

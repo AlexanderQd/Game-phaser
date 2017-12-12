@@ -10,9 +10,11 @@ let loot;
 let spriteloot;
 const spawnchest = 24;
 const spawnWalkDemon = 0;
-let collisionChestCount = 0;
+
 let wallSpawn = 29;
 let wallGroup;
+let chestGroup;
+let potionGroup;
 //player
 let player;
 let controls = {};
@@ -65,9 +67,9 @@ Game.testmap.prototype = {
         */
         map.setCollisionBetween(23,24);
         //audio======================================================
-        let music = this.add.audio('epic');
+       /* let music = this.add.audio('epic');
         music.play('', 0, 1, true);
-        music.onLoop.add(this.playLevelMusic, music);
+        music.onLoop.add(this.playLevelMusic, music);*/
         //=====================================================        
         emptybarhealth = this.add.sprite(window.innerWidth / 2 - 103, 20, 'emptybar');
         emptybarhealth.fixedToCamera = true;
@@ -110,22 +112,25 @@ Game.testmap.prototype = {
         let countWalkDemon = 0;
         wallGroup = this.game.add.group();
         demonWalkGroup = this.game.add.group();
-        
+        chestGroup = this.game.add.group();
+        potionGroup = this.game.add.group();
+
         for(let i = 0; i < mapArray.length; i++)
         {
             if(mapArray[i].index === spawnchest){
                 chests[countChest] = new Chest(mapArray[i].worldX + 50, mapArray[i].worldY, this.game);
+                chestGroup.add(chests[countChest].chest);                
                 countChest++;
             }
             if(mapArray[i].index === spawnWalkDemon){
-                demons[countWalkDemon] = new Demon(mapArray[i].worldX , mapArray[i].worldY, this.game, Phaser);
+               /* demons[countWalkDemon] = new Demon(mapArray[i].worldX , mapArray[i].worldY, this.game, Phaser);
                 demonWalkGroup.add(demons[countWalkDemon].demon);
-                countWalkDemon++;
+                countWalkDemon++;*/
             }
             if(mapArray[i].index === wallSpawn){
-                let wall = this.game.add.sprite(mapArray[i].worldX + 64, mapArray[i].worldY, 'wall');
+                let wall = this.game.add.sprite(mapArray[i].worldX + 50, mapArray[i].worldY, 'wall');
                 this.game.physics.arcade.enableBody(wall);                
-                wall.visible = false;
+                wall.alpha = 0;
                 wall.body.immovable = true;
                 wallGroup.add(wall);
             }
@@ -162,15 +167,15 @@ Game.testmap.prototype = {
 
         this.physics.arcade.collide(wallGroup, demonWalkGroup, collisionMagmaHandler, null, this);        
         
-        this.physics.arcade.collide(chests[collisionChestCount].chest, layer);
-     
+        this.physics.arcade.collide(chestGroup, layer);
+        this.physics.arcade.collide(potionGroup, layer);
         this.physics.arcade.collide(spriteloot, layer);
-        this.physics.arcade.overlap(spriteloot, player.player, collisionHandlerLoot, null, this);
+        this.physics.arcade.overlap(potionGroup, player.player, collisionHandlerLoot, null, this);
      
         this.physics.arcade.overlap(bullets, demonWalkGroup, collisionHandler, null, this);
-        this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this);
+      
         this.physics.arcade.collide(bullets, layer, collisionHandlerLayer, null, this);
-        this.physics.arcade.collide(bullets, chests[collisionChestCount].chest, collisionChestHandler, null, this);
+        this.physics.arcade.collide(bullets, chestGroup, collisionChestHandler, null, this);
 
         //this.physics.arcade.collide(demons[1].demon,layer);
         demonsfly[0].demonfly.animations.play('fly', 5, true);
@@ -295,6 +300,15 @@ function collisionMagmaHandler(wall, demon)
         }       
     }*/
     
+    if(demon.animations.name === "left"){
+        demon.body.velocity.x = -demon.speed;
+        demon.animations.play('right',5,true);
+        
+    }else{
+        demon.body.velocity.x =  demon.speed;
+        demon.animations.play('left',5,true);
+        
+    }
     
 }
 function collisionHandlerLayer(bullet)
@@ -302,23 +316,36 @@ function collisionHandlerLayer(bullet)
     bullet.kill();
 }
 
-function collisionChestHandler(chest, bullet){
+function collisionChestHandler(bullet, chest){
     bullet.kill();
-    console.log(chest);
-    let img = chests[0].selectItem();
-    loot = new Loot(chest.x, chest.y - 20, this.game, img);    
-    spriteloot = loot.loot;
-    chest.kill();    
-}
-function collisionHandlerLoot(potion){
+    let number = Math.floor((Math.random() * 500) + 1);
+    let item;        
+    if(number > 1 && number < 25){
+        item = 0;
+    }else if(number > 24 && number < 300){
+        item = 1;
+    }else if(number > 299 && number < 501){
+        item = 2;
+    } 
+    loot = new Loot(chest.x, chest.y - 20, this.game, chest.spawnloot[item]);
     
+    potionGroup.add(loot.loot);
+    chest.kill();
+}
+function collisionHandlerLoot(player, potion){   
     switch(potion.key){
-        case 'powerpotion': player.setDamage(2);
+        case 'powerpotion': player.damage += 2;
             break;
-        case 'manapotion': player.setMana(10);
+        case 'manapotion': player.mana += 10;
             break;
-        case 'lifepotion': player.setHealth(10);
+        case 'lifepotion': player.health += 10;
             break;
+    }
+    if(player.mana > player.maxMana){
+        player.mana = player.maxMana;
+    }
+    if(player.health > player.maxHealth){
+        player.health = player.maxHealth;
     }
     potion.destroy();
 }
