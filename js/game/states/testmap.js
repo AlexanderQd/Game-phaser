@@ -11,6 +11,8 @@ let spriteloot;
 const spawnchest = 24;
 const spawnWalkDemon = 0;
 let collisionChestCount = 0;
+let wallSpawn = 29;
+let wallGroup;
 //player
 let player;
 let controls = {};
@@ -20,6 +22,7 @@ let emptybarhealth;
 let emptybarmana;
 //enemie
 let demons = [];
+let demonWalkGroup;
 let demonsfly = [];
 let walkDemonCollisionCount = 0;
 //shoot
@@ -35,6 +38,7 @@ Game.testmap.prototype = {
         this.load.tilemap('map','../../assets/maps/tilemaps/level1/testtilemap.csv', null, Phaser.Tilemap.CSV);
         this.load.image('tilemappaterns','../../assets/maps/tilemaps/level1/pattern.png'); 
         this.load.image('backgroundLevel1','../../assets/maps/backgrounds/redi/spooky.png');
+        this.load.image('wall', '../../assets/maps/paredes.png');
         
     },
     create:function()
@@ -104,6 +108,9 @@ Game.testmap.prototype = {
         let mapArray = layer.getTiles(0, 0, this.game.world.width, this.game.world.height);
         let countChest  = 0;
         let countWalkDemon = 0;
+        wallGroup = this.game.add.group();
+        demonWalkGroup = this.game.add.group();
+        
         for(let i = 0; i < mapArray.length; i++)
         {
             if(mapArray[i].index === spawnchest){
@@ -112,10 +119,18 @@ Game.testmap.prototype = {
             }
             if(mapArray[i].index === spawnWalkDemon){
                 demons[countWalkDemon] = new Demon(mapArray[i].worldX , mapArray[i].worldY, this.game, Phaser);
+                demonWalkGroup.add(demons[countWalkDemon].demon);
                 countWalkDemon++;
             }
+            if(mapArray[i].index === wallSpawn){
+                let wall = this.game.add.sprite(mapArray[i].worldX + 64, mapArray[i].worldY, 'wall');
+                this.game.physics.arcade.enableBody(wall);                
+                wall.visible = false;
+                wall.body.immovable = true;
+                wallGroup.add(wall);
+            }
         }
-     
+        
         
         demonsfly[0]  = new DemonFly(1300, 2800, this.game, Phaser);
         
@@ -142,18 +157,17 @@ Game.testmap.prototype = {
         
         
         this.physics.arcade.collide(player.player,layer);        
-        this.physics.arcade.collide(demons[0].demon,layer);
-        this.physics.arcade.collide(demons[1].demon,layer);
-        this.physics.arcade.collide(demons[2].demon,layer);
-        this.physics.arcade.collide(demons[3].demon,layer);
-        this.physics.arcade.collide(demons[4].demon,layer);
+        this.physics.arcade.collide(demonWalkGroup,layer);
 
+
+        this.physics.arcade.collide(wallGroup, demonWalkGroup, collisionMagmaHandler, null, this);        
+        
         this.physics.arcade.collide(chests[collisionChestCount].chest, layer);
      
         this.physics.arcade.collide(spriteloot, layer);
         this.physics.arcade.overlap(spriteloot, player.player, collisionHandlerLoot, null, this);
      
-        this.physics.arcade.overlap(bullets, demons[0].demon, collisionHandler, null, this);
+        this.physics.arcade.overlap(bullets, demonWalkGroup, collisionHandler, null, this);
         this.physics.arcade.overlap(bullets, demonsfly[0].demonfly, collisionHandler, null, this);
         this.physics.arcade.collide(bullets, layer, collisionHandlerLayer, null, this);
         this.physics.arcade.collide(bullets, chests[collisionChestCount].chest, collisionChestHandler, null, this);
@@ -253,8 +267,10 @@ function fire(game,player,bullets){
         player.mana -= 5;       
     }
 }
-function collisionHandler(enemie, bullet)
+function collisionHandler(bullet, enemie)
 {   
+
+
     bullet.kill();    
     enemie.life -= (player.player.damage - enemie.defense);       
     scoreText.text = scoreString + (points += 10 );
@@ -263,7 +279,7 @@ function collisionHandler(enemie, bullet)
         enemie.kill();
     }  
 }
-function collisionMagmaHandler(demon)
+function collisionMagmaHandler(wall, demon)
 {   /* 
     healthbar.width = this.player.health;
     this.player.health -= 1;    
