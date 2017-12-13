@@ -8,7 +8,7 @@ Game.Preloader.prototype = {
         this.load.image('emptybar', '../../assets/Character/bars/EmptyBar.png');
         
         //player        
-        this.load.atlas('player','../../assets/Character/player.png','../assets/Character/player.json')
+        this.load.atlas('player','../../assets/Character/player.png','../assets/Character/player.json');
         this.load.audio('playershot','../../assets/Character/shot/shot.ogg');
         this.load.audio('playerjump','../../assets/Character/shot/jump.ogg');
 

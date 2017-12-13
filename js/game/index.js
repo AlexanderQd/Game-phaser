@@ -1,6 +1,6 @@
 window.onload = function()
 {
-    var game = new Phaser.Game("100%","100%",Phaser.CANVAS,'game');
+    var game = new Phaser.Game("99%","99%",Phaser.CANVAS,'game');
 
     game.state.add('Boot',Game.Boot);
     game.state.add('Preloader',Game.Preloader);

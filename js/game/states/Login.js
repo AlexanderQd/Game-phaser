@@ -6,7 +6,7 @@ Game.Login.prototype = {
     preload:function(){ 
     
         this.add.plugin(PhaserInput.Plugin);
-       
+        this.load.image('buttonsMenu','../../../assets/button/main-menu.png');
     },
     create:function(){    
         

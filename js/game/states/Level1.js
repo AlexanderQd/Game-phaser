@@ -9,11 +9,13 @@ let layer;
 const spanwChests = 24;
 const spanwWalkDemons = 0;
 const wallSpawn = 1;
+const spikeSpawn = 10;
 //groups
 let wallGroup;
 let chestGroup;
 let walkDemonGroup;
 let potionGroup;
+let spikeGroup;
 //player
 let player;
 let controls = {};
@@ -43,11 +45,11 @@ Game.Level1.prototype = {
         this.load.image('tilemappaterns','../../assets/maps/tilemaps/level1/pattern.png'); 
         this.load.image('backgroundLevel1','../../assets/maps/backgrounds/redi/spooky.png');
         this.load.image('wall', '../../assets/maps/paredes.png');
-        
+        this.load.image('spike','../../assets/maps/tilemaps/level1/spike.png');
     },
     create:function()
     {
-        
+       
         //========================create background===========================
         this.add.tileSprite(0,0,6400,3500,'backgroundLevel1');
 
@@ -86,10 +88,9 @@ Game.Level1.prototype = {
         manabar.width = 100;
 
         scoreString = 'Score: ';
-        scoreText = this.add.text(10,50, scoreString + points, { font: '34px Arial', fill: '#fff'});
-        scoreText.fixedToCamera = true;
+        scoreText = this.add.text(10,50, scoreString + points, { font: '34px Arial', fill: '#fff'});        
+        scoreText.fixedToCamera = true;       
         
-
         //=====================create player================================== 
         player = new Player(0,3000,this.game,Phaser);
         this.camera.follow(player.player);
@@ -120,6 +121,7 @@ Game.Level1.prototype = {
         demonWalkGroup = this.game.add.group();
         chestGroup = this.game.add.group();
         potionGroup = this.game.add.group();
+        spikeGroup = this.game.add.group();
 
         //=======================create enemies, chests, walls========================
         let mapArray = layer.getTiles(0, 0, this.game.world.width, this.game.world.height);
@@ -140,9 +142,17 @@ Game.Level1.prototype = {
             if(mapArray[i].index === wallSpawn){
                 let wall = this.game.add.sprite(mapArray[i].worldX + 50, mapArray[i].worldY, 'wall');
                 this.game.physics.arcade.enableBody(wall);                
-                //wall.alpha = 0;
+                wall.alpha = 0;
                 wall.body.immovable = true;
                 wallGroup.add(wall);
+            }
+            if(mapArray[i].index === spikeSpawn){
+                let spike = this.game.add.sprite(mapArray[i].worldX, mapArray[i].worldY, 'spike');
+                this.game.physics.arcade.enable(spike);
+                spike.scale.setTo(0.2);
+                spike.anchor.setTo(-0.5);
+                spike.body.immovable = true;
+                spikeGroup.add(spike);
             }
         }
 
@@ -154,7 +164,7 @@ Game.Level1.prototype = {
         //=========================collitions handles============================
         this.physics.arcade.collide(player.player,layer);
         this.physics.arcade.overlap(potionGroup, player.player, collisionHandlerLoot, null, this);
-        
+        this.physics.arcade.overlap(spikeGroup, player.player, collisionHandlerSpike, null, this);
         
         this.physics.arcade.collide(demonWalkGroup,layer);
         this.physics.arcade.collide(wallGroup, demonWalkGroup, collisionEnemieWithWalls, null, this);        
@@ -249,7 +259,7 @@ function fire(game,player,bullets){
 }
 
 //===================handler enemie and bullet collision===============================
-function collisionHandler(enemie, bullet)
+function collisionHandler(bullet, enemie)
 {   
     bullet.kill();    
     enemie.life -= (player.player.damage - enemie.defense);       
@@ -315,4 +325,20 @@ function collisionHandlerLoot(player, potion){
         player.health = player.maxHealth;
     }
     potion.destroy();
+}
+function collisionHandlerSpike(thisplayer, collisionHandlerSpike){
+    
+    thisplayer.health -= 1;
+    
+    if(thisplayer.health <= 0){
+        
+        thisplayer.health = 0;
+        if(player.player.animations.name === "left")            
+        {
+            player.deathleft();
+        }else if(player.player.animations.name === "right")
+        {
+            player.deathright();
+        }
+    }     
 }
