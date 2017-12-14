@@ -2,6 +2,7 @@
 Game.Login = function(game){
 
 };
+let idUsuario;
 Game.Login.prototype = {
     preload:function(){ 
     
@@ -54,20 +55,38 @@ Game.Login.prototype = {
             if(value.test(email.value))
             {                 
                 if(password.value.length <= 15 && password.value.length > 5){
-
+                    
                     if(name.value.length <= 20 && name.value.length > 4)
                     {
-                        let form = new FormData();
-                        form.append("name", name.value);
-                        form.append("password", password.value);
-                        form.append("email", email.value);          
-                        fetch("http://localhost:3000/user/create", {
-                            method: "POST",
-                            mode: "cors",
-                            body: form
-                        });
+                        let url = new URL("http://localhost:3000/user/getUser");
+                        params = {email: email.value};                        
+                        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+                        fetch(url, {
+                            method: "GET",
+                            mode: "cors"                    
+                        }).then((res) => {
+                           return res.json()                     
+                        }).then( response => {
+                            idUsuario = response.id;
+                            console.log(idUsuario);
+                            if(!idUsuario){
+                                let form = new FormData();
+                                form.append("name", name.value);
+                                form.append("password", password.value);
+                                form.append("email", email.value);          
+                                fetch("http://localhost:3000/user/create", {
+                                    method: "POST",
+                                    mode: "cors",
+                                    body: form
+                                });
+                            }else{
+    
+                                email.setText("email ya existe");
+                            }                            
+                        }); 
+
                     }else{
-                        name.setText("4 a 20 caracteres")
+                        name.setText("4 a 20 caracteres");
                     }
 
                 }else{

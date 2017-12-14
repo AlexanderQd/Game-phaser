@@ -37,12 +37,15 @@ router.post('/user/create', (req, res) => {
 router.get('/user/getUser', (req, res) => {    
     User.findOne({
             where: {
-                email: req.query.email,
-                password: req.query.password
+                email: req.query.email                
             }
-        }).then(data => {
+        }).then(data => {            
             res.json({
                 id: data.id
+            });
+        }).catch(err => {
+            res.json({
+                id: null
             });
         });
     
@@ -64,6 +67,24 @@ router.delete('/deleteUser', (req, res)=> {
                 });                
             });
         });     
+});
+router.get('/getScores', (req, res) => {
+    let json = {items:[]};
+    let count = 0;
+    Scores.findAll().then(datas => {
+        datas.forEach(data => User.findAll({
+            where: data.user_id
+        }).then( userData => {
+            userData.forEach((users) => {
+                json.items.push({name: users.name, score: data.score});
+                count++;                
+                if(count === datas.length){
+                    res.json(json);
+                }
+            });
+
+        }));
+    });
 });
 /*router.delete('/deleteMatch', Cors(), (req, res)=> {
     let form = new formidable.IncomingForm();    

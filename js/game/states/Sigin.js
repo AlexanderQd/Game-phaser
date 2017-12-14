@@ -2,11 +2,12 @@
 Game.Sigin = function(game){
     
 };
+
     Game.Sigin.prototype = {
         preload:function(){ 
         
             this.add.plugin(PhaserInput.Plugin);
-           
+            this.load.image('buttonsMenu','../../../assets/button/main-menu.png');
         },
         create:function(){    
             
@@ -47,10 +48,13 @@ Game.Sigin = function(game){
                     fetch(url, {
                         method: "GET",
                         mode: "cors"                    
-                    }).then((res) => {                    
-                        console.log(res);
-                        //this.game.state.start('Level1');
-                    }); 
+                    }).then((res) => {
+                       return res.json()                        
+                    }).then( response => {
+                        idUsuario = response.id;                               
+                    }).then(
+                        this.game.state.start('Level1')
+                    ); 
                 }    
                               
             });

@@ -46,9 +46,11 @@ Game.Level1.prototype = {
         this.load.image('backgroundLevel1','../../assets/maps/backgrounds/redi/spooky.png');
         this.load.image('wall', '../../assets/maps/paredes.png');
         this.load.image('spike','../../assets/maps/tilemaps/level1/spike.png');
+        
     },
     create:function()
     {
+        
        
         //========================create background===========================
         this.add.tileSprite(0,0,6400,3500,'backgroundLevel1');
@@ -147,7 +149,7 @@ Game.Level1.prototype = {
                 wallGroup.add(wall);
             }
             if(mapArray[i].index === spikeSpawn){
-                let spike = this.game.add.sprite(mapArray[i].worldX, mapArray[i].worldY, 'spike');
+                let spike = this.game.add.sprite(mapArray[i].worldX -30, mapArray[i].worldY, 'spike');
                 this.game.physics.arcade.enable(spike);
                 spike.scale.setTo(0.2);
                 spike.anchor.setTo(-0.5);
@@ -326,7 +328,7 @@ function collisionHandlerLoot(player, potion){
     }
     potion.destroy();
 }
-function collisionHandlerSpike(thisplayer, collisionHandlerSpike){
+function collisionHandlerSpike(thisplayer, spike){
     
     thisplayer.health -= 1;
     

@@ -1,7 +1,9 @@
 Game.Preloader = function(game){ 
 };
+
 Game.Preloader.prototype = {
     preload:function(){ 
+        
         //load visual assets       
         this.load.image('healthbar', '../../assets/Character/bars/red.png');
         this.load.image('manabar', '../../assets/Character/bars/blue.png');
@@ -27,6 +29,7 @@ Game.Preloader.prototype = {
         this.load.spritesheet('lifepotion', '../../assets/objects/ptlife.png', 375, 375);
         this.load.spritesheet('manapotion', '../../assets/objects/ptmana.png', 375, 375);
         this.load.spritesheet('powerpotion', '../../assets/objects/ptpower.png', 375, 375);
+        iru = "marica";
     },
     create:function(){
         this.game.state.start('MainMenu');

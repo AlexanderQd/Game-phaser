@@ -11,6 +11,7 @@ Game.MainMenu.prototype = {
         this.load.spritesheet('buttonsStart','../assets/button/start.png');
         this.load.spritesheet('buttonsDelete','../assets/button/delete.png');
         this.load.spritesheet('buttonsSearch','../assets/button/search.png');
+        this.load.spritesheet('buttonScores','../assets/button/consult-scores.png');
     },
     create:function(){
                
@@ -25,7 +26,9 @@ Game.MainMenu.prototype = {
         this.game.add.button(this.world.centerX - 150, this.world.centerY + 50, 'buttonsLogin', () => {
             this.game.state.start('Login');
         });
-
+        this.game.add.button(this.world.centerX - 300, this.world.centerY + 150, 'buttonScores', () => {
+            this.game.state.start('ConsultScores');
+        });
 
     }
 }
