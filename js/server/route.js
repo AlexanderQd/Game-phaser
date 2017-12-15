@@ -23,7 +23,7 @@ router.post('/user/create', (req, res) => {
                               score: 0,
                               map_id: 1 }],
                 score: [{
-
+                    
                 }]
                 
             },

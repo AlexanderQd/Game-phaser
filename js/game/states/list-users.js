@@ -8,7 +8,7 @@ Game.ListUsers = function(game){
            
         },
         create:function(){    
-            
+            this.game.stage.setBackgroundColor(0x2d2d2d);
           
             
         }        

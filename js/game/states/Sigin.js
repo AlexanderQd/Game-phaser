@@ -7,12 +7,13 @@ Game.Sigin = function(game){
         preload:function(){ 
         
             this.add.plugin(PhaserInput.Plugin);
-            this.load.image('buttonsMenu','../../../assets/button/main-menu.png');
+            this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
         },
         create:function(){    
             
-            this.add.tileSprite(0,0,this.world.width,this.world.height,'backgroundjungle');
-            let email = this.add.inputField(this.world.centerX -50, 100, {
+            this.game.stage.setBackgroundColor(0x2d2d2d);
+            
+            let email = this.add.inputField(this.world.centerX - 50, this.world.centerY - 100, {
                 font: '18px Arial',
                 fill: '#212121',
                 fontWeight: 'bold',
@@ -25,7 +26,7 @@ Game.Sigin = function(game){
                 type: PhaserInput.InputType.text
             });    
          
-            let password = this.add.inputField(this.world.centerX -50, 150, {
+            let password = this.add.inputField(this.world.centerX -50, this.world.centerY -50, {
                 font: '18px Arial',
                 fill: '#212121',
                 fontWeight: 'bold',
@@ -37,7 +38,7 @@ Game.Sigin = function(game){
                 placeHolder: 'Password',
                 type: PhaserInput.InputType.password
             });
-            this.add.button(this.world.centerX - 115, this.world.centerY - 150, 'buttonsSigin', function(){
+            this.add.button(this.world.centerX -60, this.world.centerY, 'buttonsSigin', function(){
                 if(email.value ==="admin@gmail.com" && password.value === "admin")
                 {
                     this.game.state.start('Admin');
@@ -58,7 +59,7 @@ Game.Sigin = function(game){
                 }    
                               
             });
-            this.add.button(this.world.centerX - 200, this.world.centerY - 50, 'buttonsMenu', () => {
+            this.add.button(this.world.centerX - 60, this.world.centerY + 50, 'buttonsMenu', () => {
                 this.game.state.start('MainMenu')
             });
             

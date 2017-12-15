@@ -28,8 +28,7 @@ Game.Preloader.prototype = {
         this.load.spritesheet('chest', '../../assets/objects/chest.png', 32, 32);
         this.load.spritesheet('lifepotion', '../../assets/objects/ptlife.png', 375, 375);
         this.load.spritesheet('manapotion', '../../assets/objects/ptmana.png', 375, 375);
-        this.load.spritesheet('powerpotion', '../../assets/objects/ptpower.png', 375, 375);
-        iru = "marica";
+        this.load.spritesheet('powerpotion', '../../assets/objects/ptpower.png', 375, 375);        
     },
     create:function(){
         this.game.state.start('MainMenu');

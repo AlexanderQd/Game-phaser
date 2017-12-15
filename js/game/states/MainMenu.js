@@ -1,32 +1,29 @@
 Game.MainMenu = function(game){ 
 };
 Game.MainMenu.prototype = {
-    preload:function(){ 
-        //load visual assets
-        this.load.image('backgroundjungle','../../assets/maps/backgrounds/jungle.png');
+    preload:function(){        
         //button        
-        this.load.spritesheet('buttonsSave','../assets/button/save.png');
-        this.load.spritesheet('buttonsSigin','../assets/button/sigin.png');
-        this.load.spritesheet('buttonsLogin','../assets/button/login.png');
-        this.load.spritesheet('buttonsStart','../assets/button/start.png');
-        this.load.spritesheet('buttonsDelete','../assets/button/delete.png');
-        this.load.spritesheet('buttonsSearch','../assets/button/search.png');
-        this.load.spritesheet('buttonScores','../assets/button/consult-scores.png');
+        this.load.spritesheet('buttonsSave','../assets/button/button_save.png');
+        this.load.spritesheet('buttonsSigin','../assets/button/button_sigin.png');
+        this.load.spritesheet('buttonsLogin','../assets/button/button_login.png');
+        this.load.spritesheet('buttonsStart','../assets/button/button_start.png');
+        this.load.spritesheet('buttonsDelete','../assets/button/button_delete.png');
+        this.load.spritesheet('buttonsSearch','../assets/button/button_search.png');
+        this.load.spritesheet('buttonScores','../assets/button/button_scores.png');
     },
     create:function(){
-               
-        this.game.add.tileSprite(0,0,this.world.width,this.world.height,'backgroundjungle');
+        this.game.stage.setBackgroundColor(0x2d2d2d);
 
-        this.game.add.button(this.world.centerX - 150, this.world.centerY - 175, 'buttonsStart', () => {
+        this.game.add.button(this.world.centerX - 150, this.world.centerY - 140, 'buttonsStart', () => {
             this.game.state.start('Level1');
         });
         this.game.add.button(this.world.centerX - 150, this.world.centerY - 70, 'buttonsSigin', () => {           
             this.game.state.start('Sigin');
         });
-        this.game.add.button(this.world.centerX - 150, this.world.centerY + 50, 'buttonsLogin', () => {
+        this.game.add.button(this.world.centerX - 150, this.world.centerY, 'buttonsLogin', () => {
             this.game.state.start('Login');
         });
-        this.game.add.button(this.world.centerX - 300, this.world.centerY + 150, 'buttonScores', () => {
+        this.game.add.button(this.world.centerX - 150, this.world.centerY + 70, 'buttonScores', () => {
             this.game.state.start('ConsultScores');
         });
 

@@ -7,12 +7,12 @@ Game.Login.prototype = {
     preload:function(){ 
     
         this.add.plugin(PhaserInput.Plugin);
-        this.load.image('buttonsMenu','../../../assets/button/main-menu.png');
+        this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
     },
     create:function(){    
         
-        this.add.tileSprite(0,0,this.world.width,this.world.height,'backgroundjungle');
-        let email = this.add.inputField(this.world.centerX -50, 100, {
+        this.game.stage.setBackgroundColor(0x2d2d2d);
+        let email = this.add.inputField(this.world.centerX -120, this.world.centerY - 200, {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
@@ -25,7 +25,7 @@ Game.Login.prototype = {
             type: PhaserInput.InputType.text
         });
 
-        let name = this.add.inputField(this.world.centerX -50, 150, {
+        let name = this.add.inputField(this.world.centerX -120, this.world.centerY - 150, {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
@@ -38,7 +38,7 @@ Game.Login.prototype = {
             type: PhaserInput.InputType.text
         });
 
-        let password = this.add.inputField(this.world.centerX -50, 200, {
+        let password = this.add.inputField(this.world.centerX -120, this.world.centerY -100, {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
@@ -50,7 +50,7 @@ Game.Login.prototype = {
             placeHolder: 'Password',
             type: PhaserInput.InputType.password
         });
-        this.add.button(this.world.centerX - 120, this.world.centerY - 135, 'buttonsLogin', function(){
+        this.add.button(this.world.centerX - 125, this.world.centerY + 10, 'buttonsLogin', function(){
             let value =  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;      
             if(value.test(email.value))
             {                 
@@ -99,7 +99,7 @@ Game.Login.prototype = {
           
         });
         
-        this.add.button(this.world.centerX - 250 , this.world.centerY - 50, 'buttonsMenu', () => {
+        this.add.button(this.world.centerX - 125 , this.world.centerY - 50, 'buttonsMenu', () => {
             this.game.state.start('MainMenu')
         })
     }        
