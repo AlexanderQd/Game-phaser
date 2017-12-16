@@ -52,10 +52,12 @@ Game.Sigin = function(game){
                     }).then((res) => {
                        return res.json()                        
                     }).then( response => {
-                        idUsuario = response.id;                               
-                    }).then(
-                        this.game.state.start('Level1')
-                    ); 
+                        variables.userId = response.id;
+                        console.log(response.id);
+                        if(variables.userId){
+                            this.game.state.start('Level1');
+                        }
+                    });
                 }    
                               
             });

@@ -7,9 +7,9 @@ let scoresText = "";
         
             this.add.plugin(PhaserInput.Plugin);
             this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
-            this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
+            this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');            
         },
-        create:function(){
+        create:function(){            
             this.game.stage.setBackgroundColor(0x2d2d2d);
             let count = 0;
             let once = true;

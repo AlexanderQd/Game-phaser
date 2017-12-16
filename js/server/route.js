@@ -10,7 +10,6 @@ import Scores from './models/scores';
 
 const router = new Router();
 
-
 router.post('/user/create', (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {       
@@ -18,8 +17,7 @@ router.post('/user/create', (req, res) => {
                 name: fields.name,
                 password: fields.password,
                 email: fields.email,
-                matchs: [{    nivelPlayer: 1,
-                              enemyState: 'alive',
+                matchs: [{    nivelPlayer: 1,                              
                               score: 0,
                               map_id: 1 }],
                 score: [{
@@ -39,7 +37,7 @@ router.get('/user/getUser', (req, res) => {
             where: {
                 email: req.query.email                
             }
-        }).then(data => {            
+        }).then(data => {                  
             res.json({
                 id: data.id
             });
@@ -65,7 +63,7 @@ router.delete('/deleteUser', (req, res)=> {
                     match.destroy();
                     user.destroy();
                 });                
-            });
+            }).then(res.json({message: 'Succesfull delete user'}));
         });     
 });
 router.get('/getScores', (req, res) => {
@@ -86,6 +84,20 @@ router.get('/getScores', (req, res) => {
         }));
     });
 });
+
+router.put('/saveGame', (req, res) =>{    
+    Match.update(
+       { score: req.query.score },
+       { where: {user_id: req.query.user_id} }
+    ).then(Scores.update(
+        {score: req.query.score},
+        {where: { user_id: req.query.user_id }})        
+    ).then(
+        res.json({message: 'Succesfull, score save'})
+    );
+})
+   
+
 /*router.delete('/deleteMatch', Cors(), (req, res)=> {
     let form = new formidable.IncomingForm();    
      form.parse(req, (err, fields, file) => {

@@ -7,11 +7,6 @@ const Match = sequelize.define('match', {
       allowNull: false,
       defaultValue: 1
     },
-    enemy_state: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      defaultValue: 'Alive'
-    },
     score: {
       type: Sequelize.INTEGER,
       allowNull: false,

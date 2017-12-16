@@ -10,12 +10,14 @@ const spanwChests = 24;
 const spanwWalkDemons = 0;
 const wallSpawn = 1;
 const spikeSpawn = 10;
+const saveSpawn = 29;
 //groups
 let wallGroup;
 let chestGroup;
 let walkDemonGroup;
 let potionGroup;
 let spikeGroup;
+let save;
 //player
 let player;
 let controls = {};
@@ -46,11 +48,10 @@ Game.Level1.prototype = {
         this.load.image('backgroundLevel1','../../assets/maps/backgrounds/redi/spooky.png');
         this.load.image('wall', '../../assets/maps/paredes.png');
         this.load.image('spike','../../assets/maps/tilemaps/level1/spike.png');
-        
+        this.load.spritesheet('save','../../assets/maps/save.png', 128, 128, 32);
     },
     create:function()
-    {
-        
+    {        
        
         //========================create background===========================
         this.add.tileSprite(0,0,6400,3500,'backgroundLevel1');
@@ -156,6 +157,12 @@ Game.Level1.prototype = {
                 spike.body.immovable = true;
                 spikeGroup.add(spike);
             }
+            if(mapArray[i].index === saveSpawn){
+                save = this.game.add.sprite(mapArray[i].worldX -30, mapArray[i].worldY - 35, 'save');
+                this.game.physics.arcade.enable(save);
+                let animation = save.animations.add('saveAnimation');
+                save.animations.play('saveAnimation', 10, true);
+            }
         }
 
 
@@ -167,6 +174,7 @@ Game.Level1.prototype = {
         this.physics.arcade.collide(player.player,layer);
         this.physics.arcade.overlap(potionGroup, player.player, collisionHandlerLoot, null, this);
         this.physics.arcade.overlap(spikeGroup, player.player, collisionHandlerSpike, null, this);
+        this.physics.arcade.overlap(save, player.player, saveGame, null, this);
         
         this.physics.arcade.collide(demonWalkGroup,layer);
         this.physics.arcade.collide(wallGroup, demonWalkGroup, collisionEnemieWithWalls, null, this);        
@@ -205,7 +213,7 @@ Game.Level1.prototype = {
             }
                            
         }
-        if(controls.up.isDown &&  player.player.frame < 10 && (player.player.body.onFloor() || player.player.body.touching.down && this.time.now > jumpTimer ) )
+        if(controls.up.isDown &&  player.player.frame < 10 && player.player.body.onFloor() )
         {
             player.up();            
         }
@@ -343,4 +351,18 @@ function collisionHandlerSpike(thisplayer, spike){
             player.deathright();
         }
     }     
+}
+function saveGame(saveparam){    
+    saveparam.body = null;
+
+    let url = new URL("http://localhost:3000/saveGame");
+    let params = {score: points, user_id: variables.userId};
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    fetch(url, {
+        method: "PUT",
+        mode: "cors"                    
+    }).then((res) => {
+       return res.json()                        
+    });
+
 }
