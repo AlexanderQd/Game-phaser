@@ -18,7 +18,8 @@ router.post('/user/create', (req, res) => {
                 email: fields.email,
                 matchs: [{    nivelPlayer: 1,                              
                               score: 0,
-                              map_id: 1 }],
+                              map_id: 1,
+                              character_id: null}],
                 score: [{
                     
                 }]
@@ -102,11 +103,33 @@ router.get('/selectCharacter', (req, res) => {
     })    
 });
 
-router.put('/setCharacterToMacth', (req, res) =>{
+router.put('/setCharacterToMacth', (req, res) =>{    
     Match.update(
         {character_id: req.query.character_id},
         {where: {user_id: req.query.user_id}}
     ).then(res.json({message: 'Succesfull, character update'}))
-})
+});
+
+router.get('/getMach', (req, res) => {
+    Match.findOne({
+        where : {user_id: req.query.user_id}
+    }).then(response => {
+        res.json(response);
+    });
+});
+
+router.get('/getCharacterFromMatch',  (req, res) =>{
+    Match.findOne({
+        where: {id: req.query.id}
+    }).then(response => {
+        Character.findOne({
+            where: {id: response.character_id}
+        }).then(response => {
+            res.json(response);
+        });
+    })
+});
+
+
 
 export default router;

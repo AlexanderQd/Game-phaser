@@ -11,6 +11,9 @@ const Match = sequelize.define('match', {
       type: Sequelize.INTEGER,
       allowNull: false,
       defaultValue: 0
+    },
+    character_id: {
+      type: Sequelize.STRING(3),      
     }
 });
 

@@ -292,9 +292,11 @@ function collisionHandler(bullet, enemie)
 {   
     bullet.kill();    
     enemie.life -= (player.player.damage - enemie.defense);       
-    scoreText.text = scoreString + (points += 10 );
     if(enemie.life <= 0)
     {
+        if(enemie.key ==="demon"){
+            scoreText.text = scoreString + (points += 100);
+        }
         enemie.kill();
     }  
 }

@@ -151,11 +151,28 @@ function setCharacterAndDatas(coordinates, datas, game,  descriptionArea) {
  * @description this function select character when you clicked him
  */
 function listener(char){
-    variables.arrayCharacters.forEach(personage => {
-        if(char.key === personage.name){
-            variables.characterSelected = personage;
-            thisGame.state.start('Level1');
+
+    let url = new URL("http://localhost:3000/setCharacterToMacth");
+    let character_id;
+    variables.arrayCharacters.forEach(select => {
+        if(select.name === char.key){
+            character_id = select.id;
         }
     })
-
+    
+    let params = {user_id: variables.userId, character_id: character_id};
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    fetch(url, {
+        method: "PUT",
+        mode: "cors"
+    }).then(res => {
+        if(res.statusText === "OK"){
+            variables.arrayCharacters.forEach(personage => {
+                if(char.key === personage.name){
+                    variables.characterSelected = personage;
+                    thisGame.state.start('Level1');
+                }
+            })
+        }
+    });
 }

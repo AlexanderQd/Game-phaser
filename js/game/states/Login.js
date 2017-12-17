@@ -67,8 +67,7 @@ Game.Login.prototype = {
                         }).then((res) => {
                            return res.json()                     
                         }).then( response => {
-                            idUsuario = response.id;
-                            console.log(idUsuario);
+                            idUsuario = response.id;                            
                             if(!idUsuario){
                                 let form = new FormData();
                                 form.append("name", name.value);
@@ -78,6 +77,10 @@ Game.Login.prototype = {
                                     method: "POST",
                                     mode: "cors",
                                     body: form
+                                }).then(message =>{                                    
+                                    if(message.statusText === "OK"){
+                                        this.game.state.start('Sigin');
+                                    }
                                 });
                             }else{
     
@@ -100,7 +103,7 @@ Game.Login.prototype = {
         });
         
         this.add.button(this.world.centerX - 125 , this.world.centerY - 50, 'buttonsMenu', () => {
-            this.game.state.start('MainMenu')
+            this.game.state.start('MainMenu');
         })
     }        
 }
