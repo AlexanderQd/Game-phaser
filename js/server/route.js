@@ -7,8 +7,8 @@ import Character from './models/character';
 import Scores from './models/scores';
 
 
-
 const router = new Router();
+
 
 router.post('/user/create', (req, res) => {
     let form = new formidable.IncomingForm();
@@ -97,17 +97,17 @@ router.put('/saveGame', (req, res) =>{
     );
 })
    
+router.get('/selectCharacter', (req, res) => {    
+    Character.findAll().then( response =>{
+        res.json(response);
+    })    
+});
 
-/*router.delete('/deleteMatch', Cors(), (req, res)=> {
-    let form = new formidable.IncomingForm();    
-     form.parse(req, (err, fields, file) => {
-         User.findOne({
-             where: { email: fields.email }
-         }).then(user => {
-             Match.findOne({
-                where: {id: user.id }
-             }).then(console.log("entra en el primero"));             
-         }).then(console.log("Entra en el segundo"));
-     });     
-});*/
+router.put('/setCharacterToMacth', (req, res) =>{
+    Match.update(
+        {character_id: req.query.character_id},
+        {where: {user_id: req.query.user_id}}
+    ).then(res.json({message: 'Succesfull, character update'}))
+})
+
 export default router;

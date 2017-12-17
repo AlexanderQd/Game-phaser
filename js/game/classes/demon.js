@@ -1,12 +1,19 @@
-/*
-    Class demon 
-    constructor position x y and var game 
-    add anchor, scale and animations
-    add physics and body
-    
-*/
+/**
+ * @file class demon
+ * @author Alexander Quintana Diaz
+ * @class
+ * @classdesc This class generate a new sprite demon in phaser game
+ */
 class Demon
 {
+    /**
+     * @constructor
+     * @param {number} x 
+     * @param {number} y 
+     * @param {Object} game 
+     * @param {Object} phaser
+     * @description create new demon with weight animations, sprites, movement, defense, life, speed, gravity
+     */
     constructor(x,y,game,phaser)
     {        
         this.demon = game.add.sprite(x,y,'demon');

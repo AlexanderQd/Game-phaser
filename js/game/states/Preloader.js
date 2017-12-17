@@ -10,7 +10,7 @@ Game.Preloader.prototype = {
         this.load.image('emptybar', '../../assets/Character/bars/EmptyBar.png');
         
         //player        
-        this.load.atlas('player','../../assets/Character/player.png','../assets/Character/player.json');
+        //this.load.atlas('player','../../assets/Character/red-dragon.png','../assets/Character/red-dragon.json');
         this.load.audio('playershot','../../assets/Character/shot/shot.ogg');
         this.load.audio('playerjump','../../assets/Character/shot/jump.ogg');
 
@@ -31,6 +31,6 @@ Game.Preloader.prototype = {
         this.load.spritesheet('powerpotion', '../../assets/objects/ptpower.png', 375, 375);        
     },
     create:function(){
-        this.game.state.start('MainMenu');
+        this.game.state.start('SelectChar');
     }
 }

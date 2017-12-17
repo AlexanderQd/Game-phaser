@@ -34,8 +34,15 @@ const Character = sequelize.define('character', {
     mana:{
         type: Sequelize.INTEGER,
         allowNull: false
+    },
+    img_route:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    json_route:{
+        type: Sequelize.STRING,
+        allowNull: false,
     }
 });
 
-Character.hasMany(Match,{as: 'matchs', foreignKey: 'character_id'});
 module.exports = Character;

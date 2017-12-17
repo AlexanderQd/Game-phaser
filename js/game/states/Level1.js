@@ -1,8 +1,12 @@
-
+/**
+ * @file Contain level 1 of game
+ * @author Alexander Quintana Diaz
+ * @description This file contain all necesary to play this states phaser game
+ * @param {Objec} game 
+ */
 
 Game.Level1 = function(game){};
 
-//map
 let map;
 let layer;
 //spawns
@@ -241,7 +245,14 @@ Game.Level1.prototype = {
         this.game.state.start('MainMenu');
     },
 }
-//==========================function create fire sprite================================
+
+/**
+ * 
+ * @param {Object} game 
+ * @param {Object} player 
+ * @param {Array} bullets
+ * @description this function create player fire shot to kill enemies
+ */
 function fire(game,player,bullets){   
     
     if(game.time.now > nextFire && bullets.countDead() > 0 && player.mana >= 5)
@@ -268,7 +279,12 @@ function fire(game,player,bullets){
     }
 }
 
-//===================handler enemie and bullet collision===============================
+/**
+ * 
+ * @param {Array} bullet 
+ * @param {Object} enemie
+ * @description this function handler the collision between enemies and bullets
+ */
 function collisionHandler(bullet, enemie)
 {   
     bullet.kill();    
@@ -280,7 +296,12 @@ function collisionHandler(bullet, enemie)
     }  
 }
 
-//=========handler collision enemies with walls========================================
+/**
+ * 
+ * @param {Object} wall 
+ * @param {Object} demon 
+ * @description this function handler the collision between wall and enemies to generate movement
+ */
 function collisionEnemieWithWalls(wall, demon)
 {    
     if(demon.animations.name === "left"){
@@ -294,13 +315,23 @@ function collisionEnemieWithWalls(wall, demon)
     }
 }
 
-//=====================handler collision bullet with layer================================
+/**
+ * 
+ * @param {array} bullet
+ * @description this function destroy bullet between collision with map
+ */
 function collisionHandlerLayer(bullet)
 {
     bullet.kill();
 }
 
-//===================handler collision bullet with chest====================================
+/**
+ * 
+ * @param {Object} bullet 
+ * @param {Object} chest
+ * @description this function handler the collision between bullets and chest when this collision chest destroy and drop loot
+ * @see Chest
+ */
 function collisionChestHandler(bullet, chest){
     bullet.kill();
     let number = Math.floor((Math.random() * 500) + 1);
@@ -318,7 +349,12 @@ function collisionChestHandler(bullet, chest){
     chest.kill();  
 }
 
-//=====================handler player collision with potion==============================
+/**
+ * 
+ * @param {Object} player 
+ * @param {Object} potion
+ * @description this function handler the collision between player and potions 
+ */
 function collisionHandlerLoot(player, potion){
     switch(potion.key){
         case 'powerpotion': player.damage += 2;
@@ -336,6 +372,12 @@ function collisionHandlerLoot(player, potion){
     }
     potion.destroy();
 }
+/**
+ * 
+ * @param {Object} thisplayer 
+ * @param {Object} spike
+ * @description this function handler the collision between player and spikes
+ */
 function collisionHandlerSpike(thisplayer, spike){
     
     thisplayer.health -= 1;
@@ -352,6 +394,11 @@ function collisionHandlerSpike(thisplayer, spike){
         }
     }     
 }
+/**
+ * 
+ * @param {Object} saveparam
+ * @description when player overlap this object the game connect with api and save score of this match in the server
+ */
 function saveGame(saveparam){    
     saveparam.body = null;
 

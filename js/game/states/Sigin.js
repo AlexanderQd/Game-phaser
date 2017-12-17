@@ -55,7 +55,7 @@ Game.Sigin = function(game){
                         variables.userId = response.id;
                         console.log(response.id);
                         if(variables.userId){
-                            this.game.state.start('Level1');
+                            this.game.state.start('SelectChar');
                         }
                     });
                 }    

@@ -1,6 +1,11 @@
+/**
+ * @author Alexander Quintana Diaz
+ * @param {Object} game 
+ */
 Game.Admin = function(game){
     
 };
+
     Game.Admin.prototype = {
         preload:function(){ 
         
