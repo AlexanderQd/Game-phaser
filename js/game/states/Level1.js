@@ -53,6 +53,7 @@ Game.Level1.prototype = {
         this.load.image('wall', '../../assets/maps/paredes.png');
         this.load.image('spike','../../assets/maps/tilemaps/level1/spike.png');
         this.load.spritesheet('save','../../assets/maps/save.png', 128, 128, 32);
+        this.load.atlas('player',variables.characterSelected.img_route,variables.characterSelected.json_route);
     },
     create:function()
     {        
@@ -80,26 +81,28 @@ Game.Level1.prototype = {
         //========================add interface=================================       
         emptybarhealth = this.add.sprite(window.innerWidth / 2 - 103, 20, 'emptybar');
         emptybarhealth.fixedToCamera = true;
-        emptybarhealth.width = 110;
+        emptybarhealth.width = variables.characterSelected.health + 10;
         
         emptybarmana = this.add.sprite(window.innerWidth / 2 + 80, 20, 'emptybar');
         emptybarmana.fixedToCamera = true;
-        emptybarmana.width = 110;
+        emptybarmana.width = variables.characterSelected.health + 10;
 
         healthbar = this.add.sprite(emptybarhealth.x + 6 , emptybarhealth.y + 4,'healthbar');
         healthbar.fixedToCamera = true;
-        healthbar.width = 100;
+        healthbar.width = variables.characterSelected.mana;
 
         manabar = this.add.sprite(emptybarmana.x + 6, emptybarmana.y + 4, 'manabar');
         manabar.fixedToCamera = true;
-        manabar.width = 100;
+        manabar.width = variables.characterSelected.mana;
 
         scoreString = 'Score: ';
         scoreText = this.add.text(10,50, scoreString + points, { font: '34px Arial', fill: '#fff'});        
         scoreText.fixedToCamera = true;       
         
         //=====================create player================================== 
-        player = new Player(0,3000,this.game,Phaser);
+        player = new Player(0,3000, variables.characterSelected.attack, variables.characterSelected.defense, variables.characterSelected.health, 
+            variables.characterSelected.velocity, variables.characterSelected.jump, variables.characterSelected.mana, this.game,Phaser);
+
         this.camera.follow(player.player);
         player.player.body.collideWorldBounds = true;
         player.player.body.gravity.y = 1400;

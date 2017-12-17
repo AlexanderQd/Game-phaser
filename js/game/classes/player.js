@@ -1,6 +1,6 @@
 
 class Player {
-    constructor(x,y,game,phaser)
+    constructor(x, y, attack, defense, health, velocity, jump, mana, game, phaser)
     {
        
         this.player = game.add.sprite(x,y,'player');
@@ -10,13 +10,14 @@ class Player {
         this.player.animations.add('left', phaser.Animation.generateFrameNames('',5, 9));
         this.player.animations.add('deathleft', phaser.Animation.generateFrameNames('',23, 33));
         this.player.animations.add('deathright', phaser.Animation.generateFrameNames('',10, 22));
-        this.player.damage = 10;
-        this.player.speed = 250;
-        this.player.mana = 100;
+        this.player.damage = attack;
+        this.player.defense = defense;
+        this.player.speed = velocity;
+        this.player.mana = mana;
         this.player.level = 1;
-        this.player.health = 100;
-        this.player.maxMana = 100;
-        this.player.maxHealth = 100;
+        this.player.health = health;
+        this.player.maxMana = this.player.mana;
+        this.player.maxHealth = this.player.health;
         this.player.shotsound = game.add.audio('playershot');
         this.player.jumpsound = game.add.audio('playerjump');
         

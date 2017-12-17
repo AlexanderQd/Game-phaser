@@ -9,10 +9,9 @@ import Scores from './models/scores';
 
 const router = new Router();
 
-
 router.post('/user/create', (req, res) => {
     let form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {       
+    form.parse(req, (err, fields, files) => {
             User.create({                
                 name: fields.name,
                 password: fields.password,
