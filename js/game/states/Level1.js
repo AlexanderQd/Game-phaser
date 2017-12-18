@@ -2,7 +2,9 @@
  * @file Contain level 1 of game
  * @author Alexander Quintana Diaz
  * @description This file contain all necesary to play this states phaser game
- * @param {Objec} game 
+ * @param {Objec} game
+ * @class
+ * 
  */
 
 Game.Level1 = function(game){};
@@ -415,6 +417,6 @@ function saveGame(saveparam){
         mode: "cors"                    
     }).then((res) => {
        return res.json()                        
-    });
+    }).catch(conexionError());
 
 }

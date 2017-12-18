@@ -1,3 +1,9 @@
+/**
+ * @author Alexander Quintana Diaz
+ * @param {Object} game 
+ * @class
+ * @classdesc This state allow delete users with text
+ */
 Game.DelUsers = function(game){
     
 };

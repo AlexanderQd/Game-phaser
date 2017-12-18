@@ -1,3 +1,8 @@
+/**
+ * @author Alexander Quintana Diaz
+ * @param {Object} game
+ * @class
+ */
 Game.ListUsers = function(game){
     
 };

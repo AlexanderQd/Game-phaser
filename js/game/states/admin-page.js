@@ -1,6 +1,7 @@
 /**
  * @author Alexander Quintana Diaz
- * @param {Object} game 
+ * @param {Object} game
+ * @class
  */
 Game.Admin = function(game){
     

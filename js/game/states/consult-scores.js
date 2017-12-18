@@ -1,3 +1,9 @@
+/**
+ * @author Alexander Quintana Diaz
+ * @param {Object} game
+ * @class
+ * @classdesc this states represent page of consult scores in text
+ */
 Game.ConsultScores = function(game){
     
 };
@@ -42,7 +48,7 @@ let scoresText = "";
                         createText(this.game);   
                     }                     
                 })
-            }).then(count = 0, scoresText = "");
+            }).then(count = 0, scoresText = "").catch(conexionError());
             this.add.button(this.world.centerX - 150, this.world.centerY + 200, 'buttonsMenu', () => {
                 this.game.state.start('MainMenu')
             })

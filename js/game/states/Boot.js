@@ -1,3 +1,7 @@
+/**
+ * @author Alexander Quintana Diaz
+ * @class
+ */
 var Game = {};
 
 Game.Boot = function(game){
@@ -10,7 +14,7 @@ Game.Boot.prototype = {
         this.stage.disableVisibilityChange = true;
     },
     preload:function(){
-        
+        variables.Game = this;
     },
 
     create:function(){

@@ -1,106 +1,114 @@
-
+/**
+ * @author Alexander Quintana Diaz
+ * @param {Object} game
+ * @class
+ * @classdesc This state represent login
+ */
 Game.Sigin = function(game){
-    
+
 };
-    Game.Sigin.prototype = {
-        preload:function(){ 
+let idUsuario;
+Game.Sigin.prototype = {
+    preload:function(){ 
+    
+        this.add.plugin(PhaserInput.Plugin);
+        this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
+    },
+    create:function(){    
         
-            this.add.plugin(PhaserInput.Plugin);
-            this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
-        },
-        create:function(){    
-            
-            this.game.stage.setBackgroundColor(0x2d2d2d);
+        this.game.stage.setBackgroundColor(0x2d2d2d);
+        let email = this.add.inputField(this.world.centerX -120, this.world.centerY - 200, {
+            font: '18px Arial',
+            fill: '#212121',
+            fontWeight: 'bold',
+            width: 150,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 6,
+            placeHolder: 'Email',
+            type: PhaserInput.InputType.text
+        });
 
-            thisGame = this;
+        let name = this.add.inputField(this.world.centerX -120, this.world.centerY - 150, {
+            font: '18px Arial',
+            fill: '#212121',
+            fontWeight: 'bold',
+            width: 150,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 6,
+            placeHolder: 'Name',
+            type: PhaserInput.InputType.text
+        });
 
-            let email = this.add.inputField(this.world.centerX - 50, this.world.centerY - 100, {
-                font: '18px Arial',
-                fill: '#212121',
-                fontWeight: 'bold',
-                width: 150,
-                padding: 8,
-                borderWidth: 1,
-                borderColor: '#000',
-                borderRadius: 6,
-                placeHolder: 'Email',
-                type: PhaserInput.InputType.text
-            });    
-         
-            let password = this.add.inputField(this.world.centerX -50, this.world.centerY -50, {
-                font: '18px Arial',
-                fill: '#212121',
-                fontWeight: 'bold',
-                width: 150,
-                padding: 8,
-                borderWidth: 1,
-                borderColor: '#000',
-                borderRadius: 6,
-                placeHolder: 'Password',
-                type: PhaserInput.InputType.password
-            });
-            this.add.button(this.world.centerX -60, this.world.centerY, 'buttonsSigin', function(){
-                if(email.value ==="admin@gmail.com" && password.value === "admin")
-                {
-                    this.game.state.start('Admin');
+        let password = this.add.inputField(this.world.centerX -120, this.world.centerY -100, {
+            font: '18px Arial',
+            fill: '#212121',
+            fontWeight: 'bold',
+            width: 150,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 6,
+            placeHolder: 'Password',
+            type: PhaserInput.InputType.password
+        });
+        this.add.button(this.world.centerX - 125, this.world.centerY + 10, 'buttonsSigin', function(){
+            let value =  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;      
+            if(value.test(email.value))
+            {                 
+                if(password.value.length <= 15 && password.value.length > 5){
+                    
+                    if(name.value.length <= 20 && name.value.length > 4)
+                    {
+                        let url = new URL("http://localhost:3000/user/getUser");
+                        params = {email: email.value};                        
+                        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+                        fetch(url, {
+                            method: "GET",
+                            mode: "cors"                    
+                        }).then((res) => {
+                           return res.json()                     
+                        }).then( response => {
+                            idUsuario = response.id;                            
+                            if(!idUsuario){
+                                let form = new FormData();
+                                form.append("name", name.value);
+                                form.append("password", password.value);
+                                form.append("email", email.value);          
+                                fetch("http://localhost:3000/user/create", {
+                                    method: "POST",
+                                    mode: "cors",
+                                    body: form
+                                }).then(message =>{                                    
+                                    if(message.statusText === "OK"){
+                                        this.game.state.start('Sigin');
+                                    }
+                                }).catch(conexionError());
+                            }else{
+    
+                                email.setText("email ya existe");
+                            }                            
+                        }).catch(conexionError());
+
+                    }else{
+                        name.setText("4 a 20 caracteres");
+                    }
+
                 }else{
-                    sigIn(email, password);
-                }    
-                              
-            });
-            this.add.button(this.world.centerX - 60, this.world.centerY + 50, 'buttonsMenu', () => {
-                this.game.state.start('MainMenu')
-            });
-            
-        }        
-    }
-function sigIn(email, password){
-    let url = new URL("http://localhost:3000/user/getUser");
-    let params = {email: email.value, password: password.value};
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-    fetch(url, {
-        method: "GET",
-        mode: "cors"                    
-    }).then((res) => {
-       return res.json()                        
-    }).then( response => {
-        variables.userId = response.id;        
-        if(variables.userId){            
-            searchMatch()
-        }
-    });
-}
-function searchMatch(){
-    let url = new URL("http://localhost:3000/getMach");
-    let params = {user_id: variables.userId};
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-    fetch(url, {
-        method: "GET",
-        mode: "cors"
-    }).then((res) => {
-        return res.json();
-    }).then(response=>{
-        if(response.character_id === null){
-            thisGame.state.start('SelectChar');            
-        }else{
-            getCharacterFromMatch(response.id);
-        }
-    });
-}
-
-function getCharacterFromMatch(match_id){
-    let url = new URL("http://localhost:3000/getCharacterFromMatch");
-    let params = {id: match_id};
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-    fetch(url,{
-        method: "GET",
-        mode: "cors"
-    }).then((res) =>{
-        return res.json();
-    }).then(response =>{
-        variables.characterSelected = response;
-        if(variables.characterSelected != null){
-            thisGame.state.start('Level1');
-        }
-    })
+                    password.resetText();
+                }
+                 
+            }else{                
+                email.setText("valor incorrecto");
+            }
+          
+        });
+        
+        this.add.button(this.world.centerX - 125 , this.world.centerY - 50, 'buttonsMenu', () => {
+            this.game.state.start('MainMenu');
+        })
+    }        
 }
