@@ -84,7 +84,7 @@ Game.Sigin.prototype = {
                                     body: form
                                 }).then(message =>{                                    
                                     if(message.statusText === "OK"){
-                                        this.game.state.start('Sigin');
+                                        this.game.state.start('Login');
                                     }
                                 }).catch(err => {conexionError()});
                             }else{

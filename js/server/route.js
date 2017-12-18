@@ -45,8 +45,7 @@ router.get('/user/getUser', (req, res) => {
             res.json({
                 id: null
             });
-        });
-    
+        });    
 });
 
 router.delete('/deleteUser', (req, res)=> {
