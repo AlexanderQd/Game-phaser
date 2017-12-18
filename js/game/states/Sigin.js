@@ -86,12 +86,12 @@ Game.Sigin.prototype = {
                                     if(message.statusText === "OK"){
                                         this.game.state.start('Sigin');
                                     }
-                                }).catch(conexionError());
+                                }).catch(err => {conexionError()});
                             }else{
     
                                 email.setText("email ya existe");
                             }                            
-                        }).catch(conexionError());
+                        }).catch(error => {conexionError()});
 
                     }else{
                         name.setText("4 a 20 caracteres");

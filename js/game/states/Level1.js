@@ -358,29 +358,6 @@ function collisionChestHandler(bullet, chest){
 
 /**
  * 
- * @param {Object} player 
- * @param {Object} potion
- * @description this function handler the collision between player and potions 
- */
-function collisionHandlerLoot(player, potion){
-    switch(potion.key){
-        case 'powerpotion': player.damage += 2;
-            break;
-        case 'manapotion': player.mana += 10;
-            break;
-        case 'lifepotion': player.health += 10;
-            break;
-    }
-    if(player.mana > player.maxMana){
-        player.mana = player.maxMana;
-    }
-    if(player.health > player.maxHealth){
-        player.health = player.maxHealth;
-    }
-    potion.destroy();
-}
-/**
- * 
  * @param {Object} thisplayer 
  * @param {Object} spike
  * @description this function handler the collision between player and spikes
@@ -400,23 +377,4 @@ function collisionHandlerSpike(thisplayer, spike){
             player.deathright();
         }
     }     
-}
-/**
- * 
- * @param {Object} saveparam
- * @description when player overlap this object the game connect with api and save score of this match in the server
- */
-function saveGame(saveparam){    
-    saveparam.body = null;
-
-    let url = new URL("http://localhost:3000/saveGame");
-    let params = {score: points, user_id: variables.userId};
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-    fetch(url, {
-        method: "PUT",
-        mode: "cors"                    
-    }).then((res) => {
-       return res.json()                        
-    }).catch(conexionError());
-
 }

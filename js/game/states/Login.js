@@ -72,7 +72,7 @@ function sigIn(email, password){
         if(response.id === null){
             authenticationError();
         }
-    }).catch(conexionError());
+    }).catch( err => {conexionError()});
 }
 function searchMatch(){
     let url = new URL("http://localhost:3000/getMach");
@@ -89,7 +89,7 @@ function searchMatch(){
         }else{
             getCharacterFromMatch(response.id);
         }
-    }).catch(conexionError());
+    }).catch(err => {conexionError()});
 }
 
 function getCharacterFromMatch(match_id){

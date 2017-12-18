@@ -48,7 +48,9 @@ let scoresText = "";
                         createText(this.game);   
                     }                     
                 })
-            }).then(count = 0, scoresText = "").catch(conexionError());
+            }).then(count = 0, scoresText = "").catch(err => {
+                conexionError()
+            });
             this.add.button(this.world.centerX - 150, this.world.centerY + 200, 'buttonsMenu', () => {
                 this.game.state.start('MainMenu')
             })
