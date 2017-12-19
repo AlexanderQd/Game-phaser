@@ -1,0 +1,10 @@
+Add new animations enemi dead
+new enemies
+enemies attack
+player level up
+bosses
+enemies drop
+bug fixed
+new levels
+new music and efects
+and more...
