@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: states/Sigin.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: states/Sigin.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author Alexander Quintana Diaz
+ * @param {Object} game
+ * @class
+ * @classdesc This state represent login
+ */
+Game.Sigin = function(game){
+
+};
+let idUsuario;
+Game.Sigin.prototype = {
+    preload:function(){ 
+    
+        this.add.plugin(PhaserInput.Plugin);
+        this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
+    },
+    create:function(){    
+        
+        this.game.stage.setBackgroundColor(0x2d2d2d);
+        let email = this.add.inputField(this.world.centerX -120, this.world.centerY - 200, {
+            font: '18px Arial',
+            fill: '#212121',
+            fontWeight: 'bold',
+            width: 150,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 6,
+            placeHolder: 'Email',
+            type: PhaserInput.InputType.text
+        });
+
+        let name = this.add.inputField(this.world.centerX -120, this.world.centerY - 150, {
+            font: '18px Arial',
+            fill: '#212121',
+            fontWeight: 'bold',
+            width: 150,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 6,
+            placeHolder: 'Name',
+            type: PhaserInput.InputType.text
+        });
+
+        let password = this.add.inputField(this.world.centerX -120, this.world.centerY -100, {
+            font: '18px Arial',
+            fill: '#212121',
+            fontWeight: 'bold',
+            width: 150,
+            padding: 8,
+            borderWidth: 1,
+            borderColor: '#000',
+            borderRadius: 6,
+            placeHolder: 'Password',
+            type: PhaserInput.InputType.password
+        });
+        this.add.button(this.world.centerX - 125, this.world.centerY + 10, 'buttonsSigin', function(){
+            let value =  /^(([^&lt;>()[\]\.,;:\s@\"]+(\.[^&lt;>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^&lt;>()[\]\.,;:\s@\"]+\.)+[^&lt;>()[\]\.,;:\s@\"]{2,})$/i;      
+            if(value.test(email.value))
+            {                 
+                if(password.value.length &lt;= 15 &amp;&amp; password.value.length > 5){
+                    
+                    if(name.value.length &lt;= 20 &amp;&amp; name.value.length > 4)
+                    {
+                        let url = new URL("http://localhost:3000/user/getUser");
+                        params = {email: email.value};                        
+                        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+                        fetch(url, {
+                            method: "GET",
+                            mode: "cors"                    
+                        }).then((res) => {
+                           return res.json()                     
+                        }).then( response => {
+                            idUsuario = response.id;                            
+                            if(!idUsuario){
+                                let form = new FormData();
+                                form.append("name", name.value);
+                                form.append("password", password.value);
+                                form.append("email", email.value);          
+                                fetch("http://localhost:3000/user/create", {
+                                    method: "POST",
+                                    mode: "cors",
+                                    body: form
+                                }).then(message =>{                                    
+                                    if(message.statusText === "OK"){
+                                        this.game.state.start('Login');
+                                    }
+                                }).catch(err => {conexionError()});
+                            }else{
+    
+                                email.setText("email ya existe");
+                            }                            
+                        }).catch(error => {conexionError()});
+
+                    }else{
+                        name.setText("4 a 20 caracteres");
+                    }
+
+                }else{
+                    password.resetText();
+                }
+                 
+            }else{                
+                email.setText("valor incorrecto");
+            }
+          
+        });
+        
+        this.add.button(this.world.centerX - 125 , this.world.centerY - 50, 'buttonsMenu', () => {
+            this.game.state.start('MainMenu');
+        })
+    }        
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Chest.html">Chest</a></li><li><a href="Demon.html">Demon</a></li><li><a href="DemonFly.html">DemonFly</a></li><li><a href="Game.html">Game</a></li><li><a href="Game.Admin.html">Admin</a></li><li><a href="Game.ConsultScores.html">ConsultScores</a></li><li><a href="Game.DelUsers.html">DelUsers</a></li><li><a href="Game.ListUsers.html">ListUsers</a></li><li><a href="Game.SelectChar.html">SelectChar</a></li><li><a href="Game.Sigin.html">Sigin</a></li><li><a href="game_classes_chest.js.html">game/classes/chest.js</a></li><li><a href="game_classes_demon.js.html">game/classes/demon.js</a></li><li><a href="game_classes_demon-fly.js.html">game/classes/demon-fly.js</a></li><li><a href="game_classes_loot.js.html">game/classes/loot.js</a></li><li><a href="game_states_Level1.js.html">game/states/Level1.js</a></li><li><a href="Loot.html">Loot</a></li><li><a href="Player.html">Player</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authenticationError">authenticationError</a></li><li><a href="global.html#collisionChestHandler">collisionChestHandler</a></li><li><a href="global.html#collisionEnemieWithWalls">collisionEnemieWithWalls</a></li><li><a href="global.html#collisionHandler">collisionHandler</a></li><li><a href="global.html#collisionHandlerLayer">collisionHandlerLayer</a></li><li><a href="global.html#collisionHandlerLoot">collisionHandlerLoot</a></li><li><a href="global.html#collisionHandlerSpike">collisionHandlerSpike</a></li><li><a href="global.html#conexionError">conexionError</a></li><li><a href="global.html#createTextPersonaje">createTextPersonaje</a></li><li><a href="global.html#down">down</a></li><li><a href="global.html#fire">fire</a></li><li><a href="global.html#fly">fly</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#listener">listener</a></li><li><a href="global.html#rigth">rigth</a></li><li><a href="global.html#saveGame">saveGame</a></li><li><a href="global.html#selectItem">selectItem</a></li><li><a href="global.html#setCharacterAndDatas">setCharacterAndDatas</a></li><li><a href="global.html#spawn">spawn</a></li><li><a href="global.html#up">up</a></li><li><a href="global.html#variables">variables</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 11:42:54 GMT+0000 (Hora estándar GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

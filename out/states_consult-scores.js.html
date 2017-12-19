@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: states/consult-scores.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: states/consult-scores.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author Alexander Quintana Diaz
+ * @param {Object} game
+ * @class
+ * @classdesc this states represent page of consult scores in text
+ */
+Game.ConsultScores = function(game){
+    
+};
+let scoresText = "";
+    Game.ConsultScores.prototype = {
+        preload:function(){ 
+        
+            this.add.plugin(PhaserInput.Plugin);
+            this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+            this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');            
+        },
+        create:function(){            
+            this.game.stage.setBackgroundColor(0x2d2d2d);
+            let count = 0;
+            let once = true;
+            fetch('http://localhost:3000/getScores', {
+                method: "GET",
+                mode: "cors"                    
+            }).then((res) => {                
+               return res.json()                        
+            }).then( response => {                
+                response.items.sort((a , b) =>{
+                    if(a.score &lt; b.score){
+                        return 1;
+                    }
+                    if(a.score > b.score){
+                        return -1
+                    }
+                    return 0;
+                });
+                response.items.forEach(element => {
+                    count++;                   
+                    if(count &lt;= 5){
+                        
+                        scoresText += element.name + " score: " + element.score + "\n";                        
+                    }                    
+                    if(count === 5 &amp;&amp; once){
+                        once = false;
+                        createText(this.game);            
+                    }else if(count === response.items.length &amp;&amp; once){                        
+                        once = false;
+                        createText(this.game);   
+                    }                     
+                })
+            }).then(count = 0, scoresText = "").catch(err => {
+                conexionError()
+            });
+            this.add.button(this.world.centerX - 150, this.world.centerY + 200, 'buttonsMenu', () => {
+                this.game.state.start('MainMenu')
+            })
+        }        
+    }
+
+    function createText(game) {
+            
+            scoreText = game.add.text(game.world.centerX + 50, game.world.centerY, scoresText);
+            scoreText.anchor.setTo(0.5);           
+            scoreText.font = 'Revalia';
+            scoreText.fontSize = 60;
+            
+            //  x0, y0 - x1, y1
+            let grd = scoreText.context.createLinearGradient(0, 0, 0, scoreText.canvas.width);
+            grd.addColorStop(0, '#8ED6FF');   
+            grd.addColorStop(1, '#004CB3');
+            scoreText.fill = grd;
+        
+            scoreText.align = 'left';
+            scoreText.stroke = '#000000';
+            scoreText.strokeThickness = 2;
+            scoreText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+        
+            scoreText.inputEnabled = true;
+            scoreText.input.enableDrag();
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Chest.html">Chest</a></li><li><a href="Demon.html">Demon</a></li><li><a href="DemonFly.html">DemonFly</a></li><li><a href="Game.html">Game</a></li><li><a href="Game.Admin.html">Admin</a></li><li><a href="Game.ConsultScores.html">ConsultScores</a></li><li><a href="Game.DelUsers.html">DelUsers</a></li><li><a href="Game.ListUsers.html">ListUsers</a></li><li><a href="Game.SelectChar.html">SelectChar</a></li><li><a href="Game.Sigin.html">Sigin</a></li><li><a href="game_classes_chest.js.html">game/classes/chest.js</a></li><li><a href="game_classes_demon.js.html">game/classes/demon.js</a></li><li><a href="game_classes_demon-fly.js.html">game/classes/demon-fly.js</a></li><li><a href="game_classes_loot.js.html">game/classes/loot.js</a></li><li><a href="game_states_Level1.js.html">game/states/Level1.js</a></li><li><a href="Loot.html">Loot</a></li><li><a href="Player.html">Player</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authenticationError">authenticationError</a></li><li><a href="global.html#collisionChestHandler">collisionChestHandler</a></li><li><a href="global.html#collisionEnemieWithWalls">collisionEnemieWithWalls</a></li><li><a href="global.html#collisionHandler">collisionHandler</a></li><li><a href="global.html#collisionHandlerLayer">collisionHandlerLayer</a></li><li><a href="global.html#collisionHandlerLoot">collisionHandlerLoot</a></li><li><a href="global.html#collisionHandlerSpike">collisionHandlerSpike</a></li><li><a href="global.html#conexionError">conexionError</a></li><li><a href="global.html#createTextPersonaje">createTextPersonaje</a></li><li><a href="global.html#down">down</a></li><li><a href="global.html#fire">fire</a></li><li><a href="global.html#fly">fly</a></li><li><a href="global.html#left">left</a></li><li><a href="global.html#listener">listener</a></li><li><a href="global.html#rigth">rigth</a></li><li><a href="global.html#saveGame">saveGame</a></li><li><a href="global.html#selectItem">selectItem</a></li><li><a href="global.html#setCharacterAndDatas">setCharacterAndDatas</a></li><li><a href="global.html#spawn">spawn</a></li><li><a href="global.html#up">up</a></li><li><a href="global.html#variables">variables</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 19 2017 11:42:54 GMT+0000 (Hora estándar GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
