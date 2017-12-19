@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Demon</title>
+    <title>JSDoc: Source: functions.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,253 +17,84 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Demon</h1>
+    <h1 class="page-title">Source: functions.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Demon<span class="signature">(x, y, game, phaser)</span><span class="type-signature"></span></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    
-    <h4 class="name" id="Demon"><span class="type-signature"></span>new Demon<span class="signature">(x, y, game, phaser)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    create new demon with weight animations, sprites, movement, defense, life, speed, gravity
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>y</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>game</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>phaser</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_demon.js.html">classes/demon.js</a>, <a href="classes_demon.js.html#line17">line 17</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author Alexander Quintana Diaz
+ * @file this file contains functions
+ */
+/**
+ * @description This function handler conexion errors
+ */
+function conexionError(){
+    const errorMessage = "Error al intentar conectar compruebe su conexion a internet";
+    let text = variables.Game.add.text(32, 32, errorMessage, { font: "15px Arial", fill: "#19de65" });
+
+    setTimeout(() => {text.destroy()}, 3000);
+
+}
+
+/**
+ * @description this function handler authentication erros
+ */
+function authenticationError(){
+    const errorMessage = "Contraseña o email incorrectos";
+    let text = variables.Game.add.text(32, 32, errorMessage, { font: "15px Arial", fill: "#19de65" });
+
+    setTimeout(() => {text.destroy()}, 3000);
+}
+/**
+ * 
+ * @param {Object} saveparam
+ * @description when player overlap this object the game connect with api and save score of this match in the server
+ */
+function saveGame(saveparam){    
+    saveparam.body = null;
+
+    let url = new URL("http://localhost:3000/saveGame");
+    let params = {score: points, user_id: variables.userId};
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    fetch(url, {
+        method: "PUT",
+        mode: "cors"                    
+    }).then((res) => {
+       return res.json()                        
+    }).catch(err => {conexionError()});
+
+}
+
+/**
+ * 
+ * @param {Object} player 
+ * @param {Object} potion
+ * @description this function handler the collision between player and potions 
+ */
+function collisionHandlerLoot(player, potion){
+    switch(potion.key){
+        case 'powerpotion': player.damage += 2;
+            break;
+        case 'manapotion': player.mana += 10;
+            break;
+        case 'lifepotion': player.health += 10;
+            break;
+    }
+    if(player.mana > player.maxMana){
+        player.mana = player.maxMana;
+    }
+    if(player.health > player.maxHealth){
+        player.health = player.maxHealth;
+    }
+    potion.destroy();
+}</code></pre>
+        </article>
+    </section>
 
 
 

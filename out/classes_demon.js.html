@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Demon</title>
+    <title>JSDoc: Source: classes/demon.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,253 +17,51 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Demon</h1>
+    <h1 class="page-title">Source: classes/demon.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Demon<span class="signature">(x, y, game, phaser)</span><span class="type-signature"></span></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    
-    <h4 class="name" id="Demon"><span class="type-signature"></span>new Demon<span class="signature">(x, y, game, phaser)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    create new demon with weight animations, sprites, movement, defense, life, speed, gravity
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>y</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>game</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>phaser</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_demon.js.html">classes/demon.js</a>, <a href="classes_demon.js.html#line17">line 17</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file class demon
+ * @author Alexander Quintana Diaz
+ * @class
+ * @classdesc This class generate a new sprite demon in phaser game
+ */
+class Demon
+{
+    /**
+     * @constructor
+     * @param {number} x 
+     * @param {number} y 
+     * @param {Object} game 
+     * @param {Object} phaser
+     * @description create new demon with weight animations, sprites, movement, defense, life, speed, gravity
+     */
+    constructor(x,y,game,phaser)
+    {        
+        this.demon = game.add.sprite(x,y,'demon');
+        this.demon.anchor.setTo(0.5);
+        this.demon.scale.setTo(2);       
+        this.demon.animations.add('left', phaser.Animation.generateFrameNames('',1,4));
+        this.demon.animations.add('right',phaser.Animation.generateFrameNames('',6,8));
+        game.physics.arcade.enable(this.demon);
+        this.demon.body.collideWorldBounds = true;
+        this.demon.life = 100;
+        this.demon.speed = 100;        
+        this.demon.body.gravity.y = 1400;
+        this.demon.defense = 0;        
+        this.demon.animations.play('left',5,true);
+        this.demon.body.velocity.x =  this.demon.speed; 
+    }
+
+}</code></pre>
+        </article>
+    </section>
 
 
 

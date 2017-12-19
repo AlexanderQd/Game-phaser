@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Demon</title>
+    <title>JSDoc: Source: classes/demon-fly.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,253 +17,99 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Demon</h1>
+    <h1 class="page-title">Source: classes/demon-fly.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Demon<span class="signature">(x, y, game, phaser)</span><span class="type-signature"></span></h2>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file class demonfly
+ * @author Alexander Quintana Diaz
+ * @class
+ * @classdesc This class create a new Fly Demon in phaser game
+ */
+class DemonFly
+{
+    /**
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     * @param {Object} game 
+     * @param {Object} phaser 
+     */
+    constructor(x,y,game,phaser)
+    {        
+        this.demonfly = game.add.sprite(x,y,'demonfly');
+        this.demonfly.anchor.setTo(0.5);
+        this.demonfly.scale.setTo(2);       
+        this.demonfly.animations.add('fly');        
+        game.physics.arcade.enable(this.demonfly);
+        this.demonfly.body.collideWorldBounds = true;
+        this.demonfly.life = 100;
+        this.demonfly.speed = 60;
+        this.demonfly.positionleft = this.demonfly.position.x - 60;
+        this.demonfly.positionup = this.demonfly.position.y - 50;
+        this.demonfly.defense = 5;
+    }
+    /**
+     * @method left
+     * @description set movement to left
+     */
+    left()
+    {
+        this.demonfly.body.velocity.x = this.demonfly.speed;
         
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    
-    <h4 class="name" id="Demon"><span class="type-signature"></span>new Demon<span class="signature">(x, y, game, phaser)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    create new demon with weight animations, sprites, movement, defense, life, speed, gravity
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>y</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>game</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>phaser</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_demon.js.html">classes/demon.js</a>, <a href="classes_demon.js.html#line17">line 17</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    }
+    /**
+     * @method rigth
+     * @description set movement to rigth
+     */
+    right()
+    {
+        this.demonfly.body.velocity.x = - this.demonfly.speed;        
+    }
+    /**
+     * @method up
+     * @description set movement up
+     */
+    up()
+    {
+        this.demonfly.body.velocity.y = this.demonfly.speed;
+    }
+    /**
+     * @method down
+     * @description set movement down
+     */
+    down()
+    {
+        this.demonfly.body.velocity.y = - this.demonfly.speed;
+    }
+    /**
+     * @method fly
+     * @description create movement with the others functions
+     */
+    fly()    
+    { 
+        if(this.demonfly.body.position.x >= this.demonfly.positionleft){
+            this.right();            
+        }else if(this.demonfly.body.position.x &lt; this.demonfly.positionleft - 300){            
+            this.left(); 
+        }
+        if(this.demonfly.body.position.y >= this.demonfly.positionup)
+        {            
+            this.down();
+        }else if(this.demonfly.body.position.y &lt; this.demonfly.positionup - 100)
+        {          
+            this.up();
+        }
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 
