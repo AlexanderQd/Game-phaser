@@ -5,7 +5,7 @@ import formidable from 'formidable';
 import Match from './models/match';
 import Character from './models/character';
 import Scores from './models/scores';
-
+import Passport from 'passport';
 
 const router = new Router();
 
@@ -129,6 +129,17 @@ router.get('/getCharacterFromMatch',  (req, res) =>{
     })
 });
 
+router.get('/auth/google', Passport.authenticate('google', {
+    scope: ["profile"],
 
+}));
+
+router.get('/auth/google/callback', 
+    Passport.authenticate('google'),
+    (req, res) => {
+        console.log(req.user.profile.photos)
+        res.redirect("/user/create")
+    }
+);
 
 export default router;
