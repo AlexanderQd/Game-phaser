@@ -8,8 +8,7 @@ Game.Admin = function(game){
 };
 
     Game.Admin.prototype = {
-        preload:function(){ 
-        
+        preload:function(){         
             this.add.plugin(PhaserInput.Plugin);            
             this.load.image('delete-users', '../../assets/button/button_delete-user.png');
             this.load.image('consult-scores', '../../assets/button/button_scores.png');
@@ -20,20 +19,20 @@ Game.Admin = function(game){
         create:function(){    
             this.game.stage.setBackgroundColor(0x2d2d2d);
             
-            this.add.button(this.world.centerX, this.world.centerY - 210, 'delete-users', function(){
-                this.game.state.start('DelUsers')           
+            this.add.button(this.world.centerX, this.world.centerY - 210, 'delete-users', () => {                
+                changeStateGame('DelUsers')
             });
-            this.add.button(this.world.centerX, this.world.centerY -140, 'consult-scores', function(){
-                this.game.state.start('ConsultScores')
+            this.add.button(this.world.centerX, this.world.centerY -140, 'consult-scores', () => {                
+                changeStateGame('ConsultScores');
             });
-            this.add.button(this.world.centerX, this.world.centerY - 70, 'delete-match', function(){
-                this.game.state.start('DelMatchs')
+            this.add.button(this.world.centerX, this.world.centerY - 70, 'delete-match', () => {                
+                changeStateGame('DelMatchs');
             });
-            this.add.button(this.world.centerX, this.world.centerY, 'list-users', function(){
-                this.game.state.start('ListUsers')
+            this.add.button(this.world.centerX, this.world.centerY, 'list-users', () => {                
+                changeStateGame('ListUsers');
             });
-            this.add.button(this.world.centerX, this.world.centerY + 70, 'menu', () => {
-                this.game.state.start('MainMenu')
+            this.add.button(this.world.centerX, this.world.centerY + 70, 'menu', () => {                
+                changeStateGame('MainMenu');
             });
             
         }        

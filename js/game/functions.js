@@ -1,3 +1,4 @@
+
 /**
  * @author Alexander Quintana Diaz
  * @file this file contains functions
@@ -64,4 +65,8 @@ function collisionHandlerLoot(player, potion){
         player.health = player.maxHealth;
     }
     potion.destroy();
+}
+
+function changeStateGame(state){
+    variables.Game.state.start(state);
 }

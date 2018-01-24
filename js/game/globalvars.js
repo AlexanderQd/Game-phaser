@@ -7,12 +7,16 @@ const variables = (function(){
    let arrayCharacters = [];
    let characterSelected;
    let Game;
+   let photoProfile;
+   let nameProfile
 
 return {
     userId,
     arrayCharacters,
     characterSelected,
-    Game,
+    photoProfile,
+    nameProfile,
+    Game
 }
 
 })(window, undefined)

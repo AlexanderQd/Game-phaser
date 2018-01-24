@@ -17,7 +17,7 @@ Game.Boot.prototype = {
         variables.Game = this;
     },
 
-    create:function(){
-        this.state.start('Preloader');
+    create:function(){        
+        changeStateGame('Preloader');
     }
 }

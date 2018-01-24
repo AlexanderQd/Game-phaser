@@ -13,6 +13,8 @@ Game.Sigin.prototype = {
     
         this.add.plugin(PhaserInput.Plugin);
         this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
+        this.load.image('facebook','../../../assets/facebook.png');
+        this.load.image('google','../../../assets/google.png');
     },
     create:function(){    
         
@@ -55,7 +57,7 @@ Game.Sigin.prototype = {
             placeHolder: 'Password',
             type: PhaserInput.InputType.password
         });
-        this.add.button(this.world.centerX - 125, this.world.centerY + 10, 'buttonsSigin', function(){
+        this.add.button(this.world.centerX - 125, this.world.centerY + 50, 'buttonsSigin', function(){
             let value =  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;      
             if(value.test(email.value))
             {                 
@@ -64,7 +66,7 @@ Game.Sigin.prototype = {
                     if(name.value.length <= 20 && name.value.length > 4)
                     {
                         let url = new URL("http://localhost:3000/user/getUser");
-                        params = {email: email.value};                        
+                        params = {email: email.value};
                         Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
                         fetch(url, {
                             method: "GET",
@@ -84,7 +86,7 @@ Game.Sigin.prototype = {
                                     body: form
                                 }).then(message =>{                                    
                                     if(message.statusText === "OK"){
-                                        this.game.state.start('Login');
+                                        changeStateGame('Login');
                                     }
                                 }).catch(err => {conexionError()});
                             }else{
@@ -107,8 +109,15 @@ Game.Sigin.prototype = {
           
         });
         
-        this.add.button(this.world.centerX - 125 , this.world.centerY - 50, 'buttonsMenu', () => {
-            this.game.state.start('MainMenu');
+        this.add.button(this.world.centerX - 125 , this.world.centerY, 'buttonsMenu', () => {
+            changeStateGame('MainMenu');
+        })
+
+        this.add.button(this.world.centerX - 150, this.world.centerY - 50, 'facebook', () => {
+           
+        })
+        this.add.button(this.world.centerX - 30, this.world.centerY - 50, 'google', () => { 
+            window.open("http://localhost:3000/auth/google", "_self");
         })
     }        
 }

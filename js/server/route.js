@@ -6,30 +6,17 @@ import Match from './models/match';
 import Character from './models/character';
 import Scores from './models/scores';
 import Passport from 'passport';
+import checkOriginLogin from './functions';
 
 const router = new Router();
+
 
 router.post('/user/create', (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
-            User.create({                
-                name: fields.name,
-                password: fields.password,
-                email: fields.email,
-                matchs: [{    nivelPlayer: 1,                              
-                              score: 0,
-                              map_id: 1,
-                              character_id: null}],
-                score: [{
-                    
-                }]
-                
-            },
-              {include:  [{model: Match, as: 'matchs'}, {model: Scores, as: 'score'}]}
-           ).then((user) =>{           
-                    res.json({message: 'Succesfull, user create'})         
-              });                 
-        });    
+        
+       checkOriginLogin(fields);
+    });   
 });
 
 router.get('/user/getUser', (req, res) => {    
@@ -130,15 +117,15 @@ router.get('/getCharacterFromMatch',  (req, res) =>{
 });
 
 router.get('/auth/google', Passport.authenticate('google', {
-    scope: ["profile"],
-
+    scope: ["email","profile"],
 }));
 
 router.get('/auth/google/callback', 
-    Passport.authenticate('google'),
+    Passport.authenticate('google',{failureRedirect: '/index.html' }),
     (req, res) => {
-        console.log(req.user.profile.photos)
-        res.redirect("/user/create")
+        
+       console.log(checkOriginLogin(req.user));
+        res.redirect("http://127.0.0.1:5500/index.html");
     }
 );
 

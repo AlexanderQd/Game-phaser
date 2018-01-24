@@ -6,16 +6,22 @@ import bcrypt from "bcryptjs";
 
 const User = sequelize.define('user', {
     name: {
-      type: Sequelize.STRING(20),
-      allowNull: false,
+      type: Sequelize.STRING(20),      
     },
     password: {
-      type: Sequelize.STRING(80),
-      allowNull: false,
+      type: Sequelize.STRING(80),      
     },
     email: {
-      type: Sequelize.STRING(20),
-      allowNull: false,
+      type: Sequelize.STRING(40),      
+    },
+    facebookID: {
+      type: Sequelize.STRING(50),  
+    },
+    googleID: {
+      type: Sequelize.STRING(50),  
+    },
+    userPhoto: {
+      type: Sequelize.STRING(500),
     }
   });
 User.hasMany(Match,{as: 'matchs', foreignKey: 'user_id'});

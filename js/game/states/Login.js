@@ -42,14 +42,14 @@ Game.Login = function(game){
             this.add.button(this.world.centerX -60, this.world.centerY, 'buttonsLogin', function(){
                 if(email.value ==="admin@gmail.com" && password.value === "admin")
                 {
-                    this.game.state.start('Admin');
+                    changeStateGame('Admin');
                 }else{
                     sigIn(email, password);
                 }    
                               
             });
             this.add.button(this.world.centerX - 60, this.world.centerY + 50, 'buttonsMenu', () => {
-                this.game.state.start('MainMenu')
+                changeStateGame('MainMenu')
             });
             
         }        
@@ -104,7 +104,7 @@ function getCharacterFromMatch(match_id){
     }).then(response =>{
         variables.characterSelected = response;
         if(variables.characterSelected != null){
-            thisGame.state.start('Level1');
+            changeStateGame('Level1');
         }
     })
 }

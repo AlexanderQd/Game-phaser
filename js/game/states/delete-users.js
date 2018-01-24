@@ -55,7 +55,7 @@ Game.DelUsers = function(game){
                 }                            
             });
             this.add.button(this.world.centerX - 5, this.world.centerY + 70, 'menu', () => {
-                this.game.state.start('MainMenu')
+                changeStateGame('MainMenu');
             });
             
         }        

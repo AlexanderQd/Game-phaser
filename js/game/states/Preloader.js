@@ -31,6 +31,6 @@ Game.Preloader.prototype = {
         this.load.spritesheet('powerpotion', '../../assets/objects/ptpower.png', 375, 375);        
     },
     create:function(){
-        this.game.state.start('MainMenu');
+        changeStateGame('MainMenu');
     }
 }
