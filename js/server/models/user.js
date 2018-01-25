@@ -19,9 +19,6 @@ const User = sequelize.define('user', {
     },
     googleID: {
       type: Sequelize.STRING(50),  
-    },
-    userPhoto: {
-      type: Sequelize.STRING(500),
     }
   });
 User.hasMany(Match,{as: 'matchs', foreignKey: 'user_id'});
@@ -34,15 +31,19 @@ User.prototype.validPassword = function(password) {
 
 //Hooks
 User.beforeCreate((user, options) => {
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(user.password, salt);
-  return (user.password = hash);
+  if(user.password){
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(user.password, salt);
+    return (user.password = hash);
+  }
 });
 
 User.beforeUpdate((user, options) => {
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(user.password, salt);
-  return (user.password = hash);
+  if(user.password){
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(user.password, salt);
+    return (user.password = hash);
+  }
 });
 
 module.exports = User;

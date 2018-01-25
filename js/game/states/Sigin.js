@@ -75,7 +75,7 @@ Game.Sigin.prototype = {
                            return res.json()                     
                         }).then( response => {
                             idUsuario = response.id;                            
-                            if(!idUsuario){
+                            if(!idUsuario){                                
                                 let form = new FormData();
                                 form.append("name", name.value);
                                 form.append("password", password.value);
@@ -84,7 +84,8 @@ Game.Sigin.prototype = {
                                     method: "POST",
                                     mode: "cors",
                                     body: form
-                                }).then(message =>{                                    
+                                }).then(message =>{
+                                    console.log("sale");                                
                                     if(message.statusText === "OK"){
                                         changeStateGame('Login');
                                     }

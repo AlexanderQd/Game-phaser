@@ -13,9 +13,24 @@ const router = new Router();
 
 router.post('/user/create', (req, res) => {
     let form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
-        
-       checkOriginLogin(fields);
+    form.parse(req, (err, fields, files) => {       
+        User.create({                
+            name: fields.name,
+            password: fields.password,
+            email: fields.email,
+            matchs: [{    nivelPlayer: 1,                              
+                          score: 0,
+                          map_id: 1,
+                          character_id: null}],
+            score: [{
+                
+            }]
+            
+        },
+          {include:  [{model: Match, as: 'matchs'}, {model: Scores, as: 'score'}]}
+       ).then((user) =>{           
+                res.json({message: 'Succesfull, user create'})         
+          });
     });   
 });
 
@@ -124,7 +139,7 @@ router.get('/auth/google/callback',
     Passport.authenticate('google',{failureRedirect: '/index.html' }),
     (req, res) => {
         
-       console.log(checkOriginLogin(req.user));
+        checkOriginLogin(req.user);
         res.redirect("http://127.0.0.1:5500/index.html");
     }
 );
