@@ -14,6 +14,7 @@ function createUser(data){
                     name: data.name,
                     facebookID: data.facebookID,
                     googleID: data.googleID,
+                    userPhoto: data.userPhoto,
                     matchs: [{      nivelPlayer: 1,                              
                                     score: 0,
                                     map_id: 1,
@@ -22,14 +23,16 @@ function createUser(data){
           
                                     }]    
                }, {include:  [{model: Match, as: 'matchs'}, {model: Scores, as: 'score'}]}
-            )}           
+            )}
     })
 }
 
 const checkOriginLogin = (data) => {    
     if(data.profile){
-        if(data.profile.provider === "google"){      
-            let userdata = {name: data.profile.displayName, googleID: data.profile.id};
+        if(data.profile.provider === "google"){
+            let img ="";
+            data.profile.photos.forEach(data => img = data.value);
+            let userdata = {name: data.profile.displayName, googleID: data.profile.id, userPhoto: img};            
             createUser(userdata);
             return "User create";
         }else if(data.profile.provider === "facebook"){

@@ -10,7 +10,6 @@ import checkOriginLogin from './functions';
 
 const router = new Router();
 
-
 router.post('/user/create', (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {       
@@ -144,4 +143,8 @@ router.get('/auth/google/callback',
     }
 );
 
+router.get('/cookie', (req, res) =>{
+    res.cookie("prueba" , 'valor de la galletita').send('Cookie is set');
+    console.log('Cookies: ', req.cookies)
+})
 export default router;
