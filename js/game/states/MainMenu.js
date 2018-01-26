@@ -20,7 +20,7 @@ Game.MainMenu.prototype = {
             this.game.state.start('Login');
         });
         this.game.add.button(this.world.centerX - 150, this.world.centerY + 70, 'buttonScores', () => {
-            this.game.state.start('ConsultScores');
+            this.game.state.start('Profile');
         });
 
     }

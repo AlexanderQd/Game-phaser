@@ -16,6 +16,7 @@ window.onload = function()
     game.state.add('Level1', Game.Level1);
     game.state.add('Admin', Game.Admin);
     game.state.add('Profile', Game.Profile);
+    game.state.add('Profile', Game.Profile);
     game.state.add('DelUsers', Game.DelUsers);
     game.state.add('ConsultScores', Game.ConsultScores);    
     game.state.add('ListUsers', Game.ListUsers);

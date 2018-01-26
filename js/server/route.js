@@ -136,15 +136,17 @@ router.get('/auth/google', Passport.authenticate('google', {
 
 router.get('/auth/google/callback', 
     Passport.authenticate('google',{failureRedirect: '/index.html' }),
-    (req, res) => {
-        
-        checkOriginLogin(req.user);
+    (req, res) => {        
+        checkOriginLogin(req.user);        
+        res.cookie("userId", req.user.profile.id);
+        console.log(req.cookies);
         res.redirect("http://127.0.0.1:5500/index.html");
     }
 );
 
-router.get('/cookie', (req, res) =>{
-    res.cookie("prueba" , 'valor de la galletita').send('Cookie is set');
-    console.log('Cookies: ', req.cookies)
-})
+router.get('/cookies', (req, res) =>{
+    console.log(req.cookies);
+    res.json(req.cookies);
+});
+
 export default router;

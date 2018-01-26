@@ -85,7 +85,7 @@ Game.Sigin.prototype = {
                                     mode: "cors",
                                     body: form
                                 }).then(message =>{
-                                    console.log("sale");                                
+                                                                    
                                     if(message.statusText === "OK"){
                                         changeStateGame('Login');
                                     }
