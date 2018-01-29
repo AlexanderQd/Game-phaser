@@ -5,6 +5,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "formidable": "^1.1.1",
@@ -21,7 +22,8 @@
     "@orange-games/phaser-input": "^2.0.5",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1"
+    "babel-preset-env": "^1.6.1",
+    "dotenv": "^4.0.0"
   },
   "name": "infernus-dragon",
   "version": "0.0.2",

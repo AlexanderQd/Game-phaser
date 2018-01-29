@@ -137,16 +137,18 @@ router.get('/auth/google', Passport.authenticate('google', {
 router.get('/auth/google/callback', 
     Passport.authenticate('google',{failureRedirect: '/index.html' }),
     (req, res) => {        
-        checkOriginLogin(req.user);        
-        res.cookie("userId", req.user.profile.id);
-        console.log(req.cookies);
+        checkOriginLogin(req.user);
         res.redirect("http://127.0.0.1:5500/index.html");
     }
 );
 
 router.get('/cookies', (req, res) =>{
-    console.log(req.cookies);
-    res.json(req.cookies);
+    // Update views
+    req.session.views = (req.session.views || 0) + 1;
+
+    // Write response
+    res.end(req.session.views + ' views');
+    console.log(req.cookies.userId);
 });
 
 export default router;
