@@ -17,7 +17,7 @@ app.use(BodyParser.json());
 app.use(Morgan('dev'));
 app.use(cookieParse());
 app.use(cookieSession({   
-    keys: [process.env.KeyCookies],
+    keys: [process.env.KEY_COOKIES],
     maxAge: 24 * 60 * 60 * 1000
   }));
 

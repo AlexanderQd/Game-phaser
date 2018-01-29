@@ -70,3 +70,13 @@ function collisionHandlerLoot(player, potion){
 function changeStateGame(state){
     variables.Game.state.start(state);
 }
+
+function getIdFromURL(){            
+    let params = {};
+    let param_array = window.location.href.split('?')[1].split('#');
+    for(let i in param_array){
+        x = param_array[i].split('=');
+        params[x[0]] = x[1];
+    }
+    sessionStorage.setItem('key', params.id);
+}

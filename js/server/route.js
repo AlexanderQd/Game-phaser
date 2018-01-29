@@ -135,20 +135,16 @@ router.get('/auth/google', Passport.authenticate('google', {
 }));
 
 router.get('/auth/google/callback', 
-    Passport.authenticate('google',{failureRedirect: '/index.html' }),
+    Passport.authenticate('google'),
     (req, res) => {        
-        checkOriginLogin(req.user);
-        res.redirect("http://127.0.0.1:5500/index.html");
+        res.redirect(`http://127.0.0.1:5500/index.html?id=${req.user.id}`);
     }
 );
 
-router.get('/cookies', (req, res) =>{
-    // Update views
-    req.session.views = (req.session.views || 0) + 1;
-
-    // Write response
-    res.end(req.session.views + ' views');
-    console.log(req.cookies.userId);
-});
+router.get('/user/getUserData', (req, res) => {
+    User.findById(req.query.id).then((user) => {
+        res.json(user);
+    }).catch((err) => console.log(err));
+})
 
 export default router;

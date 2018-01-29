@@ -119,6 +119,7 @@ Game.Sigin.prototype = {
         })
         this.add.button(this.world.centerX - 30, this.world.centerY - 50, 'google', () => { 
             window.open("http://localhost:3000/auth/google", "_self");
+            
         })
     }        
 }
