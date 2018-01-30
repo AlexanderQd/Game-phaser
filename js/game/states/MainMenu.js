@@ -9,6 +9,7 @@ Game.MainMenu.prototype = {
         this.load.spritesheet('buttonsDelete','../assets/button/button_delete.png');
         this.load.spritesheet('buttonsSearch','../assets/button/button_search.png');
         this.load.spritesheet('buttonScores','../assets/button/button_scores.png');
+        
         getIdFromURL();
         variables.userId = sessionStorage.getItem("key");
     },

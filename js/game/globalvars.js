@@ -8,7 +8,9 @@ const variables = (function(){
    let characterSelected;
    let Game;
    let photoProfile;
-   let nameProfile
+   let nameProfile;
+   let userData;
+
 
 return {
     userId,
@@ -16,7 +18,8 @@ return {
     characterSelected,
     photoProfile,
     nameProfile,
-    Game
+    Game,
+    userData,
 }
 
 })(window, undefined)

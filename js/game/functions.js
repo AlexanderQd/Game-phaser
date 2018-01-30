@@ -71,12 +71,29 @@ function changeStateGame(state){
     variables.Game.state.start(state);
 }
 
-function getIdFromURL(){            
-    let params = {};
-    let param_array = window.location.href.split('?')[1].split('#');
-    for(let i in param_array){
-        x = param_array[i].split('=');
-        params[x[0]] = x[1];
-    }
-    sessionStorage.setItem('key', params.id);
+function getIdFromURL(){
+    let url = window.location.href.split('?')[1];
+    if(url){
+        let params = {};
+        let param_array = url.split('#');
+        for(let i in param_array){
+            x = param_array[i].split('=');
+            params[x[0]] = x[1];
+        }
+        sessionStorage.setItem('key', params.id);
+        searchUserForId();
+    }    
+}
+
+function searchUserForId(){
+    let url = new URL("http://localhost:3000/user/getUserData");
+                        let params = {id: sessionStorage.getItem("key")};
+                        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+                        fetch(url, {
+                            method: "GET",
+                            mode: "cors" }).then((user) => {
+                               return user.json();
+                            }).then(data => {
+                                variables.userData = data; 
+                            }).catch(error => {conexionError()});
 }
