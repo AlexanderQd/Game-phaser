@@ -11,21 +11,32 @@ let lineDelay = 100;
 
 Game.Profile.prototype = {
         preload:function(){
-            content = `Google id: ${variables.userData.googleID},\nNombre: ${variables.userData.name}`;
+            content = "";            
             if(variables.userData){
+                if(variables.userData.googleID != null){
+                    content = `Google id: ${variables.userData.googleID},\nNombre: ${variables.userData.name}`;
+                    this.game.load.baseURL = variables.userData.userPhoto;
+                    this.game.load.crossOrigin = 'anonymous';
+                    this.game.load.image('userPhoto', variables.userData.userPhoto);
+                }else if(variables.userData.githubID != null){
+                    content = `Github id: ${variables.userData.githubID},\nNombre: ${variables.userData.name}`;
+                    this.game.load.baseURL = variables.userData.userPhoto;
+                    this.game.load.crossOrigin = 'anonymous';
+                    this.game.load.image('userPhoto', variables.userData.userPhoto);                    
+                }                             
                 
-                this.game.load.baseURL = variables.userData.userPhoto;
-                this.game.load.crossOrigin = 'anonymous';
-                this.game.load.image('userPhoto', variables.userData.userPhoto);
+
             }else{
                 
             }
          
                      
         },
-        create:function(){    
-            this.game.add.sprite(200, 200, 'userPhoto');
-            text = this.game.add.text(300, 200, '', { font: "15px Arial", fill: "#19de65" });
+        create:function(){
+            let imgProfile = this.game.add.sprite(200, 200, 'userPhoto');
+            imgProfile.width = 200;
+            imgProfile.height = 200;
+            text = this.game.add.text(500, 200, '', { font: "15px Arial", fill: "#19de65" });
 
             nextLine();
         }

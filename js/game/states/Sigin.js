@@ -13,7 +13,7 @@ Game.Sigin.prototype = {
     
         this.add.plugin(PhaserInput.Plugin);
         this.load.image('buttonsMenu','../../../assets/button/button_main-menu.png');
-        this.load.image('facebook','../../../assets/facebook.png');
+        this.load.image('github','../../../assets/github.png');
         this.load.image('google','../../../assets/google.png');
     },
     create:function(){    
@@ -114,8 +114,8 @@ Game.Sigin.prototype = {
             changeStateGame('MainMenu');
         })
 
-        this.add.button(this.world.centerX - 150, this.world.centerY - 50, 'facebook', () => {
-           
+        this.add.button(this.world.centerX - 100, this.world.centerY - 50, 'github', () => {
+            window.open("http://localhost:3000/auth/github", "_self");
         })
         this.add.button(this.world.centerX - 30, this.world.centerY - 50, 'google', () => { 
             window.open("http://localhost:3000/auth/google", "_self");

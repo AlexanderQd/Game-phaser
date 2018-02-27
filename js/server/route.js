@@ -147,4 +147,12 @@ router.get('/user/getUserData', (req, res) => {
     }).catch((err) => console.log(err));
 })
 
+router.get('/auth/github', Passport.authenticate('github'));
+
+router.get('/auth/github/redirect', Passport.authenticate('github'), (req, res)=> {
+    
+    res.redirect(`http://127.0.0.1:5500/index.html?id=${req.user.id}`)
+});
+
+
 export default router;

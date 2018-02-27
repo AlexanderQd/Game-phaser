@@ -14,7 +14,7 @@ const User = sequelize.define('user', {
     email: {
       type: Sequelize.STRING(40),      
     },
-    facebookID: {
+    githubID: {
       type: Sequelize.STRING(50),  
     },
     googleID: {
